@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"io"
 	"fmt"
-	"math/rand"
+	"time"
 )
 
 type Movie struct {
@@ -23,12 +23,17 @@ const (
 )
 
 func main(){
-	for i := 0; i < 10; i++ {
-		fmt.Println(rand.Intn(100)) //返回[0,100)的随机整数
+	t1 := time.Now()
+	for i := 0; i < 11; i++ {
+		url := fmt.Sprintf("https://movie.douban.com/top250?start=%v&filter=", i*25)
+		fmt.Printf("整在爬取第%v页",i+1)
+		res := getResponse(url)
+		DownloadImg(res)
 	}
-	//res := getResponse(baseurl)
-	//DownloadImg(res)
+	elapsed := time.Since(t1)
+	fmt.Println("总共用时: ", elapsed)
 }
+
 
 // 获取分页
 func getResponse(url string)  []Movie{
