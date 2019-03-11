@@ -1,4 +1,4 @@
-package 多进程爬虫
+package main
 
 import (
 	"github.com/PuerkitoBio/goquery"
