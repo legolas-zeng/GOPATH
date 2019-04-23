@@ -23,7 +23,7 @@ type UserTableStruct struct {
 func main() {
 	dbTask := &DBTask{}
 	var err error
-	dbTask.Dbconnection, err = sql.Open("mysql", "root:123456@tcp(192.168.2.225:3306)/mysql?charset=utf8")
+	dbTask.Dbconnection, err = sql.Open("mysql", "user:password@tcp(ip:port)/mysql?charset=utf8")
 	if err != nil {
 		fmt.Println("failed to open database:", err.Error())
 		return
