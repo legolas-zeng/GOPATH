@@ -1,0 +1,5 @@
+name: "fcom"
+shortDesc: "Fast Command"
+longDesc: "Fast execution kubernetes command."
+example: "kubectl plugin fcom [COMMAND]"
+command: "./fcom"
