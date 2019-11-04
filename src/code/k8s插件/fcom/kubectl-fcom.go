@@ -10,6 +10,7 @@ type CommandType string
 
 const (
 	GETPOD CommandType = "getpod"
+	GETALL CommandType = "getall"
 	GETPV  CommandType = "getpv"
 	GETPVC  CommandType = "getpvc"
 )
@@ -23,6 +24,7 @@ type TypeCommand struct {
 func main() {
 	CommandMsg := []TypeCommand{
 		{CommandName: GETPOD, ZHDescription: "获取pod详情", K8sCommand: "kubectl get pod -o wide"},
+		{CommandName: GETALL, ZHDescription: "获取all详情", K8sCommand: "kubectl get pod -o wide --all-namespaces"},
 		{CommandName: GETPV, ZHDescription: "获取pv详情", K8sCommand: "kubectl get pv"},
 		{CommandName: GETPVC, ZHDescription: "获取pvc详情", K8sCommand: "kubectl get pvc"},
 	}
