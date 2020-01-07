@@ -20,16 +20,16 @@ type Movie struct {
 
 const (
 	//baseurl string = "https://movie.douban.com/top250?start=25&filter="
-	imgpath string = "C:\\Users\\Administrator\\Desktop\\images"
+	imgpath string = "C:\\Users\\Administrator.000\\Desktop\\images"
 )
 
 var waitgroup sync.WaitGroup
 
 func main(){
 	t1 := time.Now()
-	for i := 0; i < 11; i++ {
+	for i := 0; i < 10; i++ {
 		url := fmt.Sprintf("https://movie.douban.com/top250?start=%v&filter=", i*25)
-		fmt.Printf("整在爬取第%v页",i+1)
+		fmt.Printf("正在爬取第%v页",i+1)
 		res := getResponse(url)
 		waitgroup.Add(1) //计数器+1 可以认为是队列+1
 		go DownloadImg(res)
@@ -42,8 +42,20 @@ func main(){
 
 // 获取分页
 func getResponse(url string)  []Movie{
-	//func getResponse(url string)  *goquery.Document{
-	content,err:= goquery.NewDocument(url)
+	client := &http.Client{}
+	reqest, err := http.NewRequest("GET", url, nil)
+	reqest.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36")
+	if err != nil {
+		panic(err)
+	}
+
+	response, _ := client.Do(reqest)
+	fmt.Println("++++===",response.StatusCode)
+
+	//res, err := http.Get(url)
+	//fmt.Println("______",res.StatusCode)
+
+	content,err:= goquery.NewDocumentFromReader(response.Body)
 	if err != nil{
 		panic(err)
 	}

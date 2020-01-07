@@ -26,7 +26,7 @@ func main(){
 	t1 := time.Now()
 	for i := 0; i < 11; i++ {
 		url := fmt.Sprintf("https://movie.douban.com/top250?start=%v&filter=", i*25)
-		fmt.Printf("整在爬取第%v页\n",i+1)
+		fmt.Printf("正在爬取第%v页\n",i+1)
 		res := getResponse(url)
 		DownloadImg(res)
 	}
@@ -37,8 +37,20 @@ func main(){
 
 // 获取分页
 func getResponse(url string)  []Movie{
-	//func getResponse(url string)  *goquery.Document{
-	content,err:= goquery.NewDocument(url)
+	client := &http.Client{}
+	reqest, err := http.NewRequest("GET", url, nil)
+	reqest.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36")
+	if err != nil {
+		panic(err)
+	}
+
+	response, _ := client.Do(reqest)
+	fmt.Println("++++===",response.StatusCode)
+
+	//res, err := http.Get(url)
+	//fmt.Println("______",res.StatusCode)
+
+	content,err:= goquery.NewDocumentFromReader(response.Body)
 	if err != nil{
 		panic(err)
 	}

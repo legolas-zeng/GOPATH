@@ -32,7 +32,7 @@ const (
 var (
     inputIP         = flag.String("IP", "0.0.0.0", "Listen IP")
     inputPort       = flag.String("PORT", "53", "Listen Port")
-    connPwd         = flag.String("PWD", "zwa666", "Connection Password")
+    connPwd         = flag.String("PWD", "18Sd9fkdkf9", "Connection Password")
     counter         int                                       //用于会话计数，给map的key使用
     connlist        map[int]net.Conn = make(map[int]net.Conn) //存储所有连接的会话
     connlistIPAddr  map[int]string   = make(map[int]string)   //存储所有IP地址，提供输入标识符显示
