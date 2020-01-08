@@ -2,5 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="E:\GOPATH\src\code\k8s\微服务" vcs="Git" />
+    <mapping directory="E:\GOPATH\src\dengxin_newsweb" vcs="Git" />
+    <mapping directory="E:\GOPATH\src\scrapy_web" vcs="Git" />
   </component>
 </project>
