@@ -5,6 +5,7 @@ import (
     "log"
     "io/ioutil"
     "fmt"
+    "github.com/Unknwon/goconfig"
 )
 
 type Cmd struct {
@@ -15,7 +16,20 @@ type Cmd struct {
 
 
 func main() {
-    url := "http://127.0.0.1:8000/handle"
+    cfg, err := goconfig.LoadConfigFile("E:\\GOPATH\\src\\code\\k8s\\conf.ini")
+    fmt.Println(cfg)
+    if err != nil {
+        log.Println("读取配置文件失败:",err)
+        return
+    }
+
+    url, err := cfg.GetValue("time", "url")
+    //fmt.Println(value)
+    if err != nil {
+        log.Println("读取值失败:",err)
+        return
+    }
+    //url := "http://127.0.0.1:8000/handle"
     http.HandleFunc("/", func(w http.ResponseWriter, _ *http.Request) {
         resp, err := http.Get(url)
 
@@ -35,6 +49,6 @@ func main() {
         log.Println("返回值:", string(content))
         fmt.Fprint(w, "返回值:", string(content))
     })
-    log.Fatal(http.ListenAndServe(":8080", nil))
+    log.Fatal(http.ListenAndServe(":8081", nil))
 
 }
