@@ -16,14 +16,15 @@ type Cmd struct {
 
 
 func main() {
-    cfg, err := goconfig.LoadConfigFile("E:\\GOPATH\\src\\code\\k8s\\conf.ini")
+    //cfg, err := goconfig.LoadConfigFile("E:\\GOPATH\\src\\code\\k8s\\conf.ini")
+    cfg, err := goconfig.LoadConfigFile("/root/conf.ini")
     fmt.Println(cfg)
     if err != nil {
         log.Println("读取配置文件失败:",err)
         return
     }
 
-    url, err := cfg.GetValue("time", "url")
+    url, err := cfg.GetValue("DEFAULT", "url")
     //fmt.Println(value)
     if err != nil {
         log.Println("读取值失败:",err)
