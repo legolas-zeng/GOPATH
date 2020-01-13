@@ -17,7 +17,7 @@ type Cmd struct {
 
 func main() {
     //cfg, err := goconfig.LoadConfigFile("E:\\GOPATH\\src\\code\\k8s\\conf.ini")
-    cfg, err := goconfig.LoadConfigFile("/root/conf.ini")
+    cfg, err := goconfig.LoadConfigFile("/root/config/conf.ini")
     fmt.Println(cfg)
     if err != nil {
         log.Println("读取配置文件失败:",err)
