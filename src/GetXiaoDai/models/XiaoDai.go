@@ -2,28 +2,44 @@ package models
 
 import (
 	"github.com/astaxie/beego/orm"
-	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	"fmt"
 )
 
-type xiaodai struct {
+type XiaoDai struct {
 	Id			int
-	Name 		string		//客户名称
-	Money		int			//消费金额
-	Close		bool		//是否关闭
+	FileName 	string		//文件名
+	HashName	string		//哈希名
+	FilePath	string		//文件路径
+	Path		string		//提取的数据路径
 
 }
 
-func RegisterDB(){
-	orm.Debug = true
-	orm.RegisterModel(new(xiaodai))
-	orm.RegisterDataBase("default", "mysql", "root:qq1005521@tcp(127.0.0.1:3306)/xiaodai?charset=utf8", 30)
-	err := orm.RunSyncdb("default", false, true)
-	if err != nil {
-		fmt.Println("数据库创建失败!!")
-		fmt.Println(err)
-	} else {
-		fmt.Printf("数据库初始化已完成！！")
+
+//TODO 查询信息
+func (this *XiaoDai) FindXiaoDaiInfo(table string,filer string,) ([]*XiaoDai) {
+	var xiaodai []*XiaoDai
+	o := orm.NewOrm()
+	o.QueryTable(table).Filter("IpDocker",filer).All(&xiaodai,"Node")
+	return xiaodai
+}
+
+//TODO 保存数据表
+func (this *XiaoDai) InsertXiaoDaiInfo(FileName string,HashName string,FilePath string,Path string) {
+	var xiaodai XiaoDai
+	o := orm.NewOrm()
+	xiaodai.FileName = FileName
+	xiaodai.HashName = HashName
+	xiaodai.FilePath = FilePath
+	xiaodai.Path = Path
+	id ,err := o.Insert(&xiaodai)
+	if err == nil {
+		fmt.Println(id)
 	}
-
 }
+
+//TODO 更新数据表
+
+
+
+

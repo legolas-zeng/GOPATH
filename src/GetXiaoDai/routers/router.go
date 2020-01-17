@@ -1,10 +1,15 @@
 package routers
 
 import (
-	"GetXiaoDai/controllers"
 	"github.com/astaxie/beego"
+	"GetXiaoDai/controllers"
 )
 
 func init() {
-    beego.Router("/", &controllers.MainController{})
+    //beego.Router("/", &controllers.MainController{})
+	beego.Router("/",&controllers.IndexController{},"get:Index")
+	beego.Router("/uploadfile",&controllers.UploadFileController{},"post:UpFile")
+	beego.NSInclude(
+		&controllers.UploadFileController{},
+	)
 }
