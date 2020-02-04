@@ -6,7 +6,6 @@ import (
     "path"
     "time"
     "os"
-    "crypto/md5"
     "math/rand"
     "GetXiaoDai/models"
 )
@@ -43,19 +42,24 @@ func (this *UploadFileController) UpFile(){
     }
     //构造文件名称
     rand.Seed(time.Now().UnixNano())
-    randNum := fmt.Sprintf("%d", rand.Intn(9999)+1000 )
-    hashName := md5.Sum( []byte( time.Now().Format("2006_01_02_15_04_05_") + randNum ) )
-
-    fileName := fmt.Sprintf("%x",hashName) + ext
+    //randNum := fmt.Sprintf("%d", rand.Intn(9999)+1000 )
+    //hashName := md5.Sum( []byte( time.Now().Format("2006_01_02_15_04_05_") + randNum ) )
+    //str := (*string)(unsafe.Pointer(&hashName))
+    hashName := time.Now().Format("2006-01-02-15-04-05")
+    fmt.Println(hashName)
+    fileName := hashName + ext
     //this.Ctx.WriteString(  fileName )
-
+    //fmt.Printf("%T",*str)
+    //fmt.Println("1111111",reflect.TypeOf(hashName))
     fpath := uploadDir + fileName
+    fmt.Println(fpath)
     defer f.Close()//关闭上传的文件，不然的话会出现临时文件不能清除的情况
     err = this.SaveToFile("myfile", fpath)
     if err != nil {
         this.Ctx.WriteString( fmt.Sprintf("%v",err) )
     }
     this.Ctx.WriteString( "上传成功~！！！！！！！" )
-    models.XiaoDai.InsertXiaoDaiInfo("",hashName,fpath,fpath)
+    var XiaoDai models.XiaoDai
+    XiaoDai.InsertXiaoDaiInfo(fileName,hashName,fpath,fpath)
 }
 
