@@ -8,7 +8,7 @@ import (
 func init() {
     //beego.Router("/", &controllers.MainController{})
 	beego.Router("/",&controllers.IndexController{},"get:Index")
-	beego.Router("/uploadfile",&controllers.UploadFileController{},"post:UpFile")
+	beego.Router("/uploadfile",&controllers.UploadFileController{},"*:UpFile")
 	beego.NSInclude(
 		&controllers.UploadFileController{},
 	)

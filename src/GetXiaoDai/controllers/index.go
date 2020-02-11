@@ -7,8 +7,8 @@ type IndexController struct {
 }
 
 func (this *IndexController) Index() {
-
-    this.TplName = "index.html"
+    //this.TplName = "index.html"
+    this.TplName = "form_file_upload.html"
     this.Render()
 }
 

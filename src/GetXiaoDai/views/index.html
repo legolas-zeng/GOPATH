@@ -1,4 +1,57 @@
-<form id="fform" method="POST" enctype="multipart/form-data" action="/uploadfile">
-    <input id="myfile" name="myfile" type="file" />
-    <input type="submit" value="保存"  />
-</form>
+{{/*<form id="fform" method="POST" enctype="multipart/form-data" action="/uploadfile">*/}}
+    {{/*<input id="myfile" name="myfile" type="file" />*/}}
+    {{/*<input type="submit" value="保存"  />*/}}
+{{/*</form>*/}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dropzone案例</title>
+    <link rel="stylesheet" href="/static/css/plugins/dropzone/basic.css" />
+    <link rel="stylesheet" href="/static/css/plugins/dropzone/dropzone.css" />
+    <script src="/static/js/plugins/dropzone/dropzone.js"></script>
+    <script src="/static/js/jquery.min.js?v=2.1.4"></script>
+</head>
+<body>
+<div id="dropzoneDiv" class="dropzone"></div>
+<script>
+    Dropzone.options.dropzoneDiv = {
+        url: "/uploadfile", // 文件提交地址
+        method: "post",  // 也可用put
+        autoProcessQueue:false,//自动上传
+        paramName: "myfile", // 默认为file
+        maxFiles: 1,// 一次性上传的文件数量上限
+        maxFilesize: 2, // 文件大小，单位：MB
+        acceptedFiles: ".jpg,.gif,.png,.jpeg,.txt,.doc,.docx,.zip", // 上传的类型
+        addRemoveLinks: true,
+        parallelUploads: 1,// 一次上传的文件数量
+        //previewsContainer:"#preview", // 上传图片的预览窗口
+        dictDefaultMessage: '拖动文件至此或者点击上传',
+        dictMaxFilesExceeded: "您最多只能上传1个文件！",
+        dictResponseError: '文件上传失败!',
+        dictInvalidFileType: "文件类型只能是*.jpg,*.gif,*.png,*.jpeg,.txt,.doc,.docx。",
+        dictFallbackMessage: "浏览器不受支持",
+        dictFileTooBig: "文件过大上传文件最大支持.",
+        dictRemoveLinks: "删除",
+        dictCancelUpload: "取消",
+        init: function () {
+            this.on("addedfile", function (file) {
+                // 上传文件时触发的事件
+            });
+            this.on("success", function (file, data) {
+                // 上传成功触发的事件
+            });
+            this.on("error", function (file, data) {
+                // 上传失败触发的事件
+            });
+            this.on("removedfile", function (file) {
+                // 删除文件时触发的方法
+            });
+        }
+
+    }
+
+</script>
+</body>
+</html>
