@@ -31,6 +31,9 @@
                     </div>
                 </div>
             </div>
+            <div id="MyDiv">
+                {{/*<button class="btn btn-success pull-right">下一步</button>*/}}
+            </div>
         </div>
     </div>
 
@@ -44,13 +47,16 @@
 
 <script>
     $(document).ready(function () {
+        var fileList_Uploading = new Array();
+
         Dropzone.options.myAwesomeDropzone = {
             url: "/uploadfile", // 文件提交地址
             method: "post",  // 也可用put
             autoProcessQueue:false,//自动上传
             paramName: "myfile", // 默认为file
             maxFiles: 1,// 一次性上传的文件数量上限
-            maxFilesize: 2, // 文件大小，单位：MB
+            maxFilesize: 20, // 文件大小，单位：MB
+            dictFileTooBig: '文件超出最大20M约束',
             acceptedFiles: ".jpg,.gif,.png,.jpeg,.txt,.doc,.docx,.zip", // 上传的类型
             addRemoveLinks: true,
             parallelUploads: 1,// 一次上传的文件数量
@@ -60,14 +66,13 @@
             dictResponseError: '文件上传失败!',
             dictInvalidFileType: "文件类型只能是*.jpg,*.gif,*.png,*.jpeg,.txt,.doc,.docx。",
             dictFallbackMessage: "浏览器不受支持",
-            dictFileTooBig: "文件过大上传文件最大支持.",
             dictRemoveLinks: "删除",
             dictCancelUpload: "取消",
 
             // Dropzone settings
             init: function () {
                 var myDropzone = this;
-
+                fileList = this.getAcceptedFiles();//所有接受的文件（合法）
                 this.element.querySelector("button[type=submit]").addEventListener("click", function (e) {
                     e.preventDefault();
                     e.stopPropagation();
@@ -76,6 +81,11 @@
                 this.on("sendingmultiple", function () {});
                 this.on("successmultiple", function (files, response) {});
                 this.on("errormultiple", function (files, response) {});
+                this.on("success", function(file,response) {
+                    console.log(file.name)
+                //TODO 这里构建“下一步”
+                    $("#MyDiv").html("<button class=\"btn btn-success pull-right\">下一步</button>")
+                })
             }
 
         }
