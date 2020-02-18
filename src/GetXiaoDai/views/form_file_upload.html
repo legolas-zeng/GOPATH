@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <title>小贷文件上传</title>
-    <link rel="shortcut icon" href="favicon.ico"> <link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="/static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="/static/css/plugins/dropzone/basic.css" rel="stylesheet">
     <link href="/static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
@@ -83,8 +83,12 @@
                 this.on("errormultiple", function (files, response) {});
                 this.on("success", function(file,response) {
                     console.log(file.name)
+                    console.log(response)
+                    var url = '/continue'
+                    var jointrul = url.concat('/',response)
+                    console.log(jointrul)
                 //TODO 这里构建“下一步”
-                    $("#MyDiv").html("<button class=\"btn btn-success pull-right\">下一步</button>")
+                    $("#MyDiv").html('<button class=\"btn btn-warning pull-right\"><a href='+jointrul+'>下一步</a></button>')
                 })
             }
 

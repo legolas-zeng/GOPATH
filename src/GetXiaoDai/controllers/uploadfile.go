@@ -28,6 +28,7 @@ func (this *UploadFileController) UpFile(){
         ".jpeg":true,
         ".png":true,
         ".zip":true,
+        ".txt":true,
     }
     if _,ok:=AllowExtMap[ext];!ok{
         this.Ctx.WriteString( "后缀名不符合上传要求" )
@@ -54,7 +55,8 @@ func (this *UploadFileController) UpFile(){
     if err != nil {
         this.Ctx.WriteString( fmt.Sprintf("%v",err) )
     }
-    this.Ctx.WriteString( "上传成功~！！！！！！！" )
+    //把文件名返回给前端
+    this.Ctx.WriteString( hashName )
     var XiaoDai models.XiaoDai
     XiaoDai.InsertXiaoDaiInfo(fileName,hashName,fpath,fpath)
 }
