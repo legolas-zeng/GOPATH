@@ -43,12 +43,34 @@
 <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
 
 <script>
-    $(function() {
-        var ws = new WebSocket('ws://' + window.location.host + '/ws');
-        ws.onmessage = function(e) {
-            $('<li>').text(event.data).appendTo($ul);
-        };
-        var $ul = $('#msg-list');
+    $(function () {
+        $("#run").click(function() {
+            console.log("启动websocket")
+            var socket = new WebSocket('ws://' + window.location.host + '/ws');
+            socket.onopen = function () {
+                log('远程服务已连接');
+                // socket.send(id)
+                console.log('已经发送id')
+            };
+            socket.onmessage = function (msg) {
+                log(msg.data);
+                var obje = document.getElementById("log_tankuang");   //日志过多时清屏
+                var textlength = obje.scrollHeight;
+                if (textlength > 10000) {
+                    obje.innerHTML = '';
+                }
+            };
+            socket.onclose = function () {
+                log("服务断开了");
+                $("#start").attr('disabled', false);
+                $("#stop").attr('disabled', true);
+            };
+            function log(msg) {
+                var obje = document.getElementById("log_tankuang");
+                obje.innerHTML += msg + "\n" ;
+                obje.scrollTop = obje.scrollHeight;   //滚动条显示最新数据
+            }
+        })
     });
 </script>
 

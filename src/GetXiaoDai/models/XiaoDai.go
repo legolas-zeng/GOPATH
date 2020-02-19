@@ -15,6 +15,10 @@ type XiaoDai struct {
 
 }
 
+type Message struct {
+	Message string `json:"message"`
+}
+
 
 //TODO 查询信息
 func (this *XiaoDai) FindXiaoDaiInfo(table string,filer string,) ([]*XiaoDai) {
