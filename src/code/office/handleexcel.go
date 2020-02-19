@@ -66,7 +66,7 @@ func func_log2fileAndStdout(msg string) {
         os.Stdout}
     fileAndStdoutWriter := io.MultiWriter(writers...)
     // 创建新的log对象
-    logger := log.New(fileAndStdoutWriter, "", log.Ldate|log.Ltime|log.Lshortfile)
+    logger := log.New(fileAndStdoutWriter, "", log.Ldate|log.Ltime)
     // 使用新的log对象，写入日志内容
-    logger.Println("--> logger :  check to make sure it works")
+    logger.Println(msg)
 }
