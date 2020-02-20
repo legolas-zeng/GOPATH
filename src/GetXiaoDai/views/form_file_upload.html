@@ -27,13 +27,19 @@
                         <button type="submit" class="btn btn-primary pull-right">提交</button>
                     </form>
                     <div>
-                        <div class="m"><small>DropzoneJS是一个开源库，提供拖放文件上传与图片预览：<a href="https://github.com/enyo/dropzone" target="_blank">https://github.com/enyo/dropzone</a></small>，百度前端团队提供的<a href="http://fex.baidu.com/webuploader/" target="_blank">Web Uploader</a>也是一个非常不错的选择，值得一试！</div>
+                        <div class="m">请先下载模板，填好后拖拽上传，服务采用beego异步框架，能快速提取小贷数据，是一个非常不错的选择，值得一试！</div>
                     </div>
                 </div>
             </div>
-            <div id="MyDiv">
-                {{/*<button class="btn btn-success pull-right">下一步</button>*/}}
-            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8">
+        </div>
+        <div class="col-sm-2" id="MyDiv">
+        </div>
+        <div class="col-sm-2">
+            <button  onclick="download()" class="btn btn-block btn-outline btn-success pull-right">下载模板</button>
         </div>
     </div>
 
@@ -95,6 +101,12 @@
         }
 
     });
+</script>
+
+<script>
+    function download(){
+        window.location.href="/download";
+    }
 </script>
 
 </body>
