@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"fmt"
-	"GetXiaoDai/models"
 	"log"
 
 	"github.com/gorilla/websocket"
@@ -10,7 +8,8 @@ import (
 
 var (
 	clients   = make(map[*websocket.Conn]bool)
-	broadcast = make(chan models.SocketMessage)
+	//broadcast = make(chan models.SocketMessage)
+	broadcast = make(chan string)
 )
 
 func init() {
@@ -21,7 +20,7 @@ func init() {
 func handleMessages() {
 	for {
 		msg := <-broadcast
-		fmt.Println("已连接的客户端数量：", len(clients))
+		//fmt.Println("已连接的客户端数量：", len(clients))
 		for client := range clients {
 			err := client.WriteJSON(msg)
 			if err != nil {
