@@ -9,6 +9,7 @@ func init() {
     //beego.Router("/", &controllers.MainController{})
 	beego.Router("/",&controllers.IndexController{},"get:Index")
 	beego.Router("/uploadfile",&controllers.UploadFileController{},"*:UpFile")
+	beego.Router("/download",&controllers.FileOptDownloadController{},"*:DownloadFile")
 	beego.Router("/continue/:excelname",&controllers.BeginController{},"*:Function")
 	beego.Router("/ws", &controllers.WebSocketController{})
 	beego.NSInclude(
