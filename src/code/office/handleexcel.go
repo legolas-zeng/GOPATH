@@ -27,7 +27,7 @@ func main(){
         //path := row.Cells[8]
         fullname := fmt.Sprintf("%s-%s", number, filename)
         fmt.Println(fullname)
-        func_log2fileAndStdout(fullname)
+        func_log2file(fullname)
         //for _, cell := range row.Cells {
         //    fmt.Println(cell)
         //}
@@ -38,7 +38,7 @@ func main(){
     //func_log2fileAndStdout()
 }
 
-func func_log2file() {
+func func_log2file(msg string) {
     //创建日志文件
     f, err := os.OpenFile("test.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
     if err != nil {

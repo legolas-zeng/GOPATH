@@ -20,6 +20,7 @@ type WebSocketController struct {
 var (
 	upgrader = websocket.Upgrader{}
 	inFile = "C:\\Users\\Administrator\\Desktop\\20200114.xlsx"
+	logFile = "C:\\Users\\Administrator\\Desktop\\test.log"
 )
 
 func (c *WebSocketController) Get() {
@@ -33,15 +34,13 @@ func (c *WebSocketController) Get() {
 
 func tailTask() {
 	fmt.Println("启动websocket！！！")
-	go handleexcle()
 	go tailMsg()
+	handleexcle()
 
 }
 
 func tailMsg(){
-	filename := "C:\\Users\\Administrator\\Desktop\\test.log"
-
-	tails, err := tail.TailFile(filename, tail.Config{
+	tails, err := tail.TailFile(logFile, tail.Config{
 		ReOpen: true,
 		Follow: true,
 		// Location:  &tail.SeekInfo{Offset: 0, Whence: 2},
@@ -59,9 +58,10 @@ func tailMsg(){
 		msg, ok = <-tails.Lines
 		if !ok {
 			fmt.Printf("tail file close reopen, filename:%s\n", tails.Filename)
-			time.Sleep(100 * time.Millisecond)
+			//time.Sleep(100 * time.Millisecond)
 			continue
 		}
+		fmt.Println("+++++++",msg.Text)
 		broadcast <- msg.Text
 	}
 }
@@ -95,12 +95,16 @@ func handleexcle(){
 	log2fileAndStdout(fmt.Sprintf("------全部完成！------"))
 	elapsed := time.Since(t1)
 	log2fileAndStdout(fmt.Sprintf("------共计%d行,总共用时%s！------",len(sheet.Rows),elapsed))
-
+	broadcast <- "complete"
+	//f, _ := os.OpenFile(logFile, os.O_WRONLY, 0644)
+	//n, _ := f.Seek(0, 2)
+	//_, err = f.WriteAt([]byte("complete"), n)
+	//defer f.Close()
 }
 
 func log2fileAndStdout(msg string) {
 	//创建日志文件
-	f, err := os.OpenFile("C:\\Users\\Administrator\\Desktop\\test.log", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	f, err := os.OpenFile(logFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

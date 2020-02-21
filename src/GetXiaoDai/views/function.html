@@ -49,10 +49,9 @@
             var socket = new WebSocket('ws://' + window.location.host + '/ws');
             socket.onopen = function () {
                 log('远程服务已连接');
-                // socket.send(id)
-                console.log('已经发送id')
             };
             socket.onmessage = function (msg) {
+                console.log(msg)
                 log(msg.data);
                 var obje = document.getElementById("log_tankuang");   //日志过多时清屏
                 var textlength = obje.scrollHeight;
@@ -66,9 +65,15 @@
                 $("#stop").attr('disabled', true);
             };
             function log(msg) {
-                var obje = document.getElementById("log_tankuang");
-                obje.innerHTML += msg + "\n" ;
-                obje.scrollTop = obje.scrollHeight;   //滚动条显示最新数据
+                console.log(typeof (msg))
+                console.log(msg)
+                if (msg == '\"complete\"'){
+                    console.log("完成");
+                }else {
+                    var obje = document.getElementById("log_tankuang");
+                    obje.innerHTML += msg + "\n";
+                    obje.scrollTop = obje.scrollHeight;   //滚动条显示最新数据
+                }
             }
         })
     });
