@@ -30,7 +30,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-6">
+        </div>
+        <div class="col-sm-3" id="MyDiv">
         </div>
         <div class="col-sm-3">
             <button  id="run" class="btn btn-block btn-outline btn-success">开始提取</button>
@@ -51,7 +53,6 @@
                 log('远程服务已连接');
             };
             socket.onmessage = function (msg) {
-                console.log(msg)
                 log(msg.data);
                 var obje = document.getElementById("log_tankuang");   //日志过多时清屏
                 var textlength = obje.scrollHeight;
@@ -65,13 +66,17 @@
                 $("#stop").attr('disabled', true);
             };
             function log(msg) {
-                console.log(typeof (msg))
-                console.log(msg)
-                if (msg == '\"complete\"'){
+                var reg = new RegExp('"',"g");
+                var str = msg.replace(reg, "");
+                str = str.replace(/\s*/g,"");
+                console.log(str)
+                console.log(str.length)
+                if (str == "complete"){
                     console.log("完成");
+                    $("#MyDiv").html('<button class=\"btn btn-warning pull-right\">下载提取数据</button>')
                 }else {
                     var obje = document.getElementById("log_tankuang");
-                    obje.innerHTML += msg + "\n";
+                    obje.innerHTML += str + "\n";
                     obje.scrollTop = obje.scrollHeight;   //滚动条显示最新数据
                 }
             }
