@@ -33,8 +33,9 @@
         <div class="col-sm-6">
         </div>
         <div class="col-sm-3" id="MyDiv">
+            <button id="tiqu" class="btn btn-block btn-outline btn-warning" >下载提取数据</button>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-3" id="norun">
             <button  id="run" class="btn btn-block btn-outline btn-success">开始提取</button>
         </div>
     </div>
@@ -69,11 +70,9 @@
                 var reg = new RegExp('"',"g");
                 var str = msg.replace(reg, "");
                 str = str.replace(/\s*/g,"");
-                console.log(str)
-                console.log(str.length)
                 if (str == "complete"){
                     console.log("完成");
-                    $("#MyDiv").html('<button class=\"btn btn-warning pull-right\">下载提取数据</button>')
+                    // $("#norun").html('<button id="tiqu" class="btn btn-block btn-outline btn-warning" >下载提取数据</button>')
                 }else {
                     var obje = document.getElementById("log_tankuang");
                     obje.innerHTML += str + "\n";
@@ -82,8 +81,27 @@
             }
         })
     });
+
 </script>
 
+<script>
+    $(function () {
+        $("#tiqu").click(function() {
+            console.log('111111')
+            // try {
+            //     var obj = new ActiveXObject("wscript.shell");
+            //     if (obj) {
+            //         obj.Run("c:/", 1, false);
+            //         //obj.run("osk");/*打开屏幕键盘*/
+            //         //obj.Run('"'+filename+'"');
+            //         obj = null;
+            //     }
+            // } catch (e) {
+            //     alert("请确定是否存在该盘符或文件");
+            // }
 
+        })
+    })
+</script>
 
 </html>

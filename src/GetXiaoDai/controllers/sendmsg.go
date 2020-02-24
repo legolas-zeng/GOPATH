@@ -4,7 +4,6 @@ import (
 	"log"
 
 	"github.com/gorilla/websocket"
-	"fmt"
 )
 
 var (
@@ -22,7 +21,7 @@ func handleMessages() {
 	for {
 		msg := <-broadcast
 		//fmt.Println("已连接的客户端数量：", len(clients))
-		fmt.Println("-------",msg)
+		//fmt.Println("-------",msg)
 		for client := range clients {
 			err := client.WriteJSON(msg)
 			if err != nil {
@@ -31,5 +30,9 @@ func handleMessages() {
 				delete(clients, client)
 			}
 		}
+		//if msg == "complete" {
+		//	fmt.Println("已经完成，关闭channel")
+		//	close(broadcast)
+		//}
 	}
 }

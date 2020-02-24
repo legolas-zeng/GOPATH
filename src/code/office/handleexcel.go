@@ -27,7 +27,7 @@ func main(){
         //path := row.Cells[8]
         fullname := fmt.Sprintf("%s-%s", number, filename)
         fmt.Println(fullname)
-        func_log2file(fullname)
+        func_log2fileAndStdout(fullname)
         //for _, cell := range row.Cells {
         //    fmt.Println(cell)
         //}
@@ -66,7 +66,7 @@ func func_log2fileAndStdout(msg string) {
         os.Stdout}
     fileAndStdoutWriter := io.MultiWriter(writers...)
     // 创建新的log对象
-    logger := log.New(fileAndStdoutWriter, "", log.Ldate|log.Ltime)
+    logger := log.New(fileAndStdoutWriter, "",log.LstdFlags|log.Lshortfile)
     // 使用新的log对象，写入日志内容
     logger.Println(msg)
 }
