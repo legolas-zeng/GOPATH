@@ -11,6 +11,7 @@ func init() {
 	beego.Router("/uploadfile",&controllers.UploadFileController{},"*:UpFile")
 	beego.Router("/download",&controllers.FileOptDownloadController{},"*:DownloadFile")
 	beego.Router("/continue/:excelname",&controllers.BeginController{},"*:Function")
+	beego.Router("/getfilesize",&controllers.BeginController{},"get:GetFileSize")
 	beego.Router("/ws", &controllers.WebSocketController{})
 	beego.NSInclude(
 		&controllers.UploadFileController{},
