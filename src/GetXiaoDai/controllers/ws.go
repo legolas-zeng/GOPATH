@@ -35,7 +35,7 @@ func (c *WebSocketController) Get() {
 func tailTask() {
 	fmt.Println("启动websocket！！！")
 	go tailMsg()
-	go handleexcle()
+	handleexcle()
 
 }
 
@@ -61,8 +61,12 @@ func tailMsg(){
 			//time.Sleep(100 * time.Millisecond)
 			continue
 		}
-		fmt.Println("+++++++",msg.Text)
 		broadcast <- msg.Text
+		if (msg.Text[21:26] == "+++++"){
+			fmt.Println("==========")
+			//TODO 读取特定的标记。让退出for循环
+			return
+		}
 	}
 }
 
@@ -82,9 +86,7 @@ func handleexcle(){
 		filename := row.Cells[7]
 		fullname := fmt.Sprintf("C:\\Users\\Administrator\\Desktop\\%s-%s", number, filename)
 		srcpath := fmt.Sprintf("%s",row.Cells[8])
-
-		//fmt.Println(srcpath,fullname)
-		time.Sleep(1*time.Second)
+		//time.Sleep(1*time.Second)
 		_ , err := copy(srcpath,fullname)
 		if err == nil {
 			log2fileAndStdout(fmt.Sprintf("success-----%s的%s：%s拷贝完成",row.Cells[2],row.Cells[5],row.Cells[7]))
@@ -96,10 +98,11 @@ func handleexcle(){
 	elapsed := time.Since(t1)
 	log2fileAndStdout(fmt.Sprintf("------共计%d行,总共用时%s！------",len(sheet.Rows),elapsed))
 	broadcast <- "complete"
-	f, _ := os.OpenFile(logFile, os.O_WRONLY, 0644)
-	n, _ := f.Seek(0, 2)
-	_, err = f.WriteAt([]byte("complete"), n)
-	defer f.Close()
+	log2fileAndStdout(fmt.Sprintf("+++++++++++++++++++++++++++++++"))
+	//f, _ := os.OpenFile(logFile, os.O_WRONLY, 0644)
+	//n, _ := f.Seek(0, 2)
+	//_, err = f.WriteAt([]byte("complete"), n)
+	//defer f.Close()
 }
 
 func log2fileAndStdout(msg string) {
