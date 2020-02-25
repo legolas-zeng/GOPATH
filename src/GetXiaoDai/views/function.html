@@ -7,6 +7,7 @@
     <link href="/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
     <link href="/static/css/font-awesome.css?v=4.4.0" rel="stylesheet">
     <link href="/static/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="/static/css/sweetalert.css" rel="stylesheet">
     <style>
         .textarea-inherit {
             width: 100%;
@@ -33,10 +34,10 @@
         <div class="col-sm-6">
         </div>
         <div class="col-sm-3" id="MyDiv">
-            <button id="tiqu" class="btn btn-block btn-outline btn-warning" >下载提取数据</button>
+            <button id="tiqu" class="btn btn-block btn-warning" disabled><div id="size">下载提取数据</div></button>
         </div>
         <div class="col-sm-3" id="norun">
-            <button  id="run" class="btn btn-block btn-outline btn-success">开始提取</button>
+            <button  id="run" class="btn btn-block btn-success">开始提取</button>
         </div>
     </div>
 </div>
@@ -44,10 +45,12 @@
 
 <script src="/static/js/jquery.min.js?v=2.1.4"></script>
 <script src="/static/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/static/js/sweetalert.min.js"></script>
 
 <script>
     $(function () {
         $("#run").click(function() {
+            $(this).attr({"disabled":"disabled"});
             console.log("启动websocket")
             var socket = new WebSocket('ws://' + window.location.host + '/ws');
             socket.onopen = function () {
@@ -73,6 +76,16 @@
                 if (str == "complete"){
                     console.log("完成");
                     // $("#norun").html('<button id="tiqu" class="btn btn-block btn-outline btn-warning" >下载提取数据</button>')
+                    $('#tiqu').attr("disabled",false);
+                    $.ajax({
+                        type: "get",
+                        url: '/getfilesize/',
+                        // data: JSON.stringify(Postdata),
+                        success: function (data) {
+                            console.log(data.Val)
+                            $("#size").html('数据总计：'+data.Val)
+                        }
+                    })
                 }else {
                     var obje = document.getElementById("log_tankuang");
                     obje.innerHTML += str + "\n";
@@ -88,18 +101,7 @@
     $(function () {
         $("#tiqu").click(function() {
             console.log('111111')
-            // try {
-            //     var obj = new ActiveXObject("wscript.shell");
-            //     if (obj) {
-            //         obj.Run("c:/", 1, false);
-            //         //obj.run("osk");/*打开屏幕键盘*/
-            //         //obj.Run('"'+filename+'"');
-            //         obj = null;
-            //     }
-            // } catch (e) {
-            //     alert("请确定是否存在该盘符或文件");
-            // }
-
+            swal("在文件夹打开")
         })
     })
 </script>
