@@ -19,8 +19,8 @@ type WebSocketController struct {
 
 var (
 	upgrader = websocket.Upgrader{}
-	inFile = "C:\\Users\\Administrator\\Desktop\\20200114.xlsx"
-	logFile = "C:\\Users\\Administrator\\Desktop\\test.log"
+	ExeclFile = "C:\\Users\\Administrator\\Desktop\\xiaodai.xlsx"
+	LogFile = "C:\\Users\\Administrator\\Desktop\\test.log"
 )
 
 func (c *WebSocketController) Get() {
@@ -40,7 +40,7 @@ func tailTask() {
 }
 
 func tailMsg(){
-	tails, err := tail.TailFile(logFile, tail.Config{
+	tails, err := tail.TailFile(LogFile, tail.Config{
 		ReOpen: true,
 		Follow: true,
 		// Location:  &tail.SeekInfo{Offset: 0, Whence: 2},
@@ -73,7 +73,7 @@ func tailMsg(){
 
 func handleexcle(){
 	// 打开文件
-	xlFile, err := xlsx.OpenFile(inFile)
+	xlFile, err := xlsx.OpenFile(ExeclFile)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
@@ -107,7 +107,7 @@ func handleexcle(){
 
 func log2fileAndStdout(msg string) {
 	//创建日志文件
-	f, err := os.OpenFile(logFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	f, err := os.OpenFile(LogFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

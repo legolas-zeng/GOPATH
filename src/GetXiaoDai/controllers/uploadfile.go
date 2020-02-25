@@ -4,10 +4,7 @@ import (
     "github.com/astaxie/beego"
     "fmt"
     "path"
-    "time"
     "os"
-    "math/rand"
-    "GetXiaoDai/models"
 )
 
 type UploadFileController struct {
@@ -28,27 +25,26 @@ func (this *UploadFileController) UpFile(){
         ".jpeg":true,
         ".png":true,
         ".zip":true,
-        ".txt":true,
+        ".xlsx":true,
     }
     if _,ok:=AllowExtMap[ext];!ok{
         this.Ctx.WriteString( "后缀名不符合上传要求" )
         return
     }
     //创建目录
-    uploadDir := "static/upload/" + time.Now().Format("2006/01/")
-    err := os.MkdirAll( uploadDir , 777)
+    //uploadDir := DesPath + time.Now().Format("2006/01/")
+    err := os.MkdirAll( DesPath , 777)
     if err != nil {
         this.Ctx.WriteString( fmt.Sprintf("%v",err) )
         return
     }
     //构造文件名称
-    rand.Seed(time.Now().UnixNano())
-    hashName := time.Now().Format("2006-01-02-15-04-05")
-    fmt.Println(hashName)
-    fileName := hashName + ext
+    //rand.Seed(time.Now().UnixNano())
+    //hashName := time.Now().Format("2006-01-02-15-04-05")
+    //fmt.Println(hashName)
     //fmt.Printf("%T",*str)
     //fmt.Println("1111111",reflect.TypeOf(hashName))
-    fpath := uploadDir + fileName
+    fpath := DesPath + "\\" + h.Filename
     fmt.Println(fpath)
     defer f.Close()//关闭上传的文件，不然的话会出现临时文件不能清除的情况
     err = this.SaveToFile("myfile", fpath)
@@ -56,8 +52,9 @@ func (this *UploadFileController) UpFile(){
         this.Ctx.WriteString( fmt.Sprintf("%v",err) )
     }
     //把文件名返回给前端
-    this.Ctx.WriteString( hashName )
-    var XiaoDai models.XiaoDai
-    XiaoDai.InsertXiaoDaiInfo(fileName,hashName,fpath,fpath)
+    this.Ctx.WriteString( h.Filename )
+
+    //var XiaoDai models.XiaoDai
+    //XiaoDai.InsertXiaoDaiInfo(fileName,hashName,fpath,fpath)
 }
 
