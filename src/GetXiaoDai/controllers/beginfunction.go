@@ -12,7 +12,9 @@ type BeginController struct {
 }
 
 var (
-	DesPath = "C:\\Users\\Administrator\\Desktop"
+	DesPath = "/data/"
+	DesPaths = "/data/fujian"
+	//DesPath = "C:\\Users\\Administrator\\Desktop"
 	sema = make(chan struct{}, 20)
 	)
 
@@ -26,7 +28,7 @@ func (this *BeginController) Function() {
 
 func (this *BeginController) GetFileSize (){
 	var size int64
-	err := filepath.Walk(DesPath, func(_ string, info os.FileInfo, err error) error {
+	err := filepath.Walk(DesPaths, func(_ string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
 			size += info.Size()
 		}

@@ -44,7 +44,8 @@ func (this *UploadFileController) UpFile(){
     //fmt.Println(hashName)
     //fmt.Printf("%T",*str)
     //fmt.Println("1111111",reflect.TypeOf(hashName))
-    fpath := DesPath + "\\" + h.Filename
+    fpath := DesPath + h.Filename
+    //fpath := DesPath + "\\" + h.Filename
     fmt.Println(fpath)
     defer f.Close()//关闭上传的文件，不然的话会出现临时文件不能清除的情况
     err = this.SaveToFile("myfile", fpath)

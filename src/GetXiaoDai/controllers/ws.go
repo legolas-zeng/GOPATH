@@ -19,8 +19,10 @@ type WebSocketController struct {
 
 var (
 	upgrader = websocket.Upgrader{}
-	ExeclFile = "C:\\Users\\Administrator\\Desktop\\xiaodai.xlsx"
-	LogFile = "C:\\Users\\Administrator\\Desktop\\test.log"
+	//ExeclFile = "C:\\Users\\Administrator\\Desktop\\xiaodai.xlsx"
+	//LogFile = "C:\\Users\\Administrator\\Desktop\\test.log"
+	ExeclFile = "/data/xiaodai.xlsx"
+	LogFile = "/data/test.log"
 )
 
 func (c *WebSocketController) Get() {
@@ -84,14 +86,21 @@ func handleexcle(){
 	for _, row := range sheet.Rows[1:] {
 		number := row.Cells[0]
 		filename := row.Cells[7]
-		fullname := fmt.Sprintf("C:\\Users\\Administrator\\Desktop\\%s-%s", number, filename)
+		//newpath := fmt.Sprintf("%s%s","C:\\Users\\Administrator\\Desktop\\", row.Cells[2])
+		newpath := fmt.Sprintf("%s%s","/data/fujian/", row.Cells[2])
+		os.MkdirAll( newpath , 777)
+
+		//fullname := fmt.Sprintf("%s\\%s-%s", newpath,number, filename)
+		fullname := fmt.Sprintf("%s/%s-%s", newpath,number, filename)
+		fmt.Println(fullname)
 		srcpath := fmt.Sprintf("%s",row.Cells[8])
 		//time.Sleep(1*time.Second)
 		_ , err := copy(srcpath,fullname)
 		if err == nil {
 			log2fileAndStdout(fmt.Sprintf("success-----%s的%s：%s拷贝完成",row.Cells[2],row.Cells[5],row.Cells[7]))
 		}else {
-			log2fileAndStdout(fmt.Sprintf("fail-----%s的%s：%s拷贝完成",row.Cells[2],row.Cells[5],row.Cells[7]))
+			log2fileAndStdout(fmt.Sprintf("fail-----%s的%s：%s拷贝失败",row.Cells[2],row.Cells[5],row.Cells[7]))
+			fmt.Println(err)
 		}
 	}
 	log2fileAndStdout(fmt.Sprintf("------全部完成！------"))
