@@ -88,7 +88,7 @@ func handleexcle(){
 		filename := row.Cells[7]
 		//newpath := fmt.Sprintf("%s%s","C:\\Users\\Administrator\\Desktop\\", row.Cells[2])
 		newpath := fmt.Sprintf("%s%s","/data/fujian/", row.Cells[2])
-		os.MkdirAll( newpath , 777)
+		os.MkdirAll( newpath , 0777)
 
 		//fullname := fmt.Sprintf("%s\\%s-%s", newpath,number, filename)
 		fullname := fmt.Sprintf("%s/%s-%s", newpath,number, filename)

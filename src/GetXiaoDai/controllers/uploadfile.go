@@ -33,7 +33,7 @@ func (this *UploadFileController) UpFile(){
     }
     //创建目录
     //uploadDir := DesPath + time.Now().Format("2006/01/")
-    err := os.MkdirAll( DesPath , 777)
+    err := os.MkdirAll( DesPath , 0777)
     if err != nil {
         this.Ctx.WriteString( fmt.Sprintf("%v",err) )
         return
