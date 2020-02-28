@@ -1,4 +1,4 @@
-package main
+package 服务端
 
 import (
     "fmt"
