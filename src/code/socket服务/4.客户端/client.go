@@ -134,6 +134,7 @@ func command(cmd []string) (string,error){
     if err != nil {
         fmt.Println("命令出错:", err.Error())
     }
+    arglist = arglist[0:0]
     utf8,_:=GbkToUtf8(result)
     return string(utf8),err
 
