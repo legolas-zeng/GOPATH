@@ -6,16 +6,7 @@ import (
 )
 
 func init() {
-    beego.Router("/", &controllers.MainController{})
+	beego.Router("/",&controllers.IndexController{},"get:Index")
+	beego.Router("/remote",&controllers.RemoteController{},"*:Remote")
 
-	cli := beego.NewNamespace("/client",
-		beego.NSRouter("/",&controllers.ClientController{},"*:Conn"),
-		beego.NSInclude(
-			&controllers.ClientController{},
-
-		),
-	)
-
-
-	beego.AddNamespace(cli)
 }
