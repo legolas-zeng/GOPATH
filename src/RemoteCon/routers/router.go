@@ -9,4 +9,14 @@ func init() {
 	beego.Router("/",&controllers.IndexController{},"get:Index")
 	beego.Router("/remote",&controllers.RemoteController{},"*:Remote")
 
+	pc := beego.NewNamespace("/pc",
+		beego.NSRouter("/reflush",&controllers.PcController{},"*:ApiFlushPcInfo"),
+
+		beego.NSInclude(
+			&controllers.PcController{},
+		),
+	)
+
+	beego.AddNamespace(pc)
+
 }

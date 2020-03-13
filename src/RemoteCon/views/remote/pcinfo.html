@@ -2,7 +2,10 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>PC信息</h5>
+                <button class="btn btn-primary">全部刷新</button>
+                <div class="ibox-tools">
+
+                </div>
             </div>
             <div class="ibox-content">
                 <div class="table-responsive">
@@ -10,30 +13,43 @@
                         <thead>
                         <tr>
                             <th style="width:100px;text-align:center;">节点IP</th>
+                            <th style="width:100px;text-align:center;">端口</th>
                             <th style="text-align:center;">主机名</th>
-                            <th style="text-align:center;">MAC地址</th>
+                            <th style="text-align:center;">CPU</th>
+                            <th style="text-align:center;">系统版本</th>
                             <th style="text-align:center;">是否在线</th>
-                            <th style="text-align:center;"><input type="checkbox" name="select_all">全选</th>
+                            <th style="text-align:center;">刷新信息</th>
                         </tr>
                         </thead>
                         <tbody id="zoneinfo">
+                        {{range $index,$element :=.info}}
                         <tr>
-                            <td align="center" style="vertical-align: middle" ></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center">
-                                <input type="checkbox"  name="radio2" value="" data-number="">
+                            <td align="center" style="vertical-align: middle" >{{$element.Ip}}</td>
+                            <td align="center" style="vertical-align: middle" >{{$element.Port}}</td>
+                            <td align="center">{{$element.Ip}}</td>
+                            <td align="center">{{$element.Cpu}}</td>
+                            <td align="center">{{$element.Osinfo}}</td>
+                            <td align="center">{{if eq $element.Online "0" }}<p><span class="badge badge-primary">在线</span></p>
+                            {{else}}
+                                <p><span class="badge badge-danger">离线</span></p>
+                            {{end}}</td>
+                            <td align="center">{{if eq $element.Online "0" }}<button id="flush" class="btn btn-primary btn-sm btn-rounded">刷新</button>
+                            {{else}}
+                                <button class="btn btn-danger btn-sm btn-rounded" disabled="disabled">刷新</button>
+                            {{end}}
                             </td>
                         </tr>
+                        {{end}}
                         </tbody>
                         <tfoot>
                         <tr>
                             <th style="width:100px;text-align:center;">节点IP</th>
+                            <th style="width:100px;text-align:center;">端口</th>
                             <th style="text-align:center;">主机名</th>
-                            <th style="text-align:center;">MAC地址</th>
+                            <th style="text-align:center;">CPU</th>
+                            <th style="text-align:center;">系统版本</th>
                             <th style="text-align:center;">是否在线</th>
-                            <th style="text-align:center;">全选</th>
+                            <th style="text-align:center;">刷新信息</th>
                         </tr>
                         </tfoot>
                     </table>

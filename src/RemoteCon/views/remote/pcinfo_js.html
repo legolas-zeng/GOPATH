@@ -1,0 +1,21 @@
+<script>
+    $(function () {
+        $("#flush").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/pc/reflush",
+                data: {'ip':'192.168.10.26'},
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data)
+                    if (data.status == '1') {
+                        toastr.success(data.msg)
+                    }
+                    else {
+                        toastr.error(data.msg)
+                    }
+                }
+            })
+        })
+    })
+</script>
