@@ -7,8 +7,13 @@ import (
 
 func init() {
 	beego.Router("/",&controllers.RemoteController{},"*:GetPcinfo")
-	beego.Router("/remote",&controllers.RemoteController{},"*:Remote")
-
+	remote := beego.NewNamespace("/remote",
+		beego.NSRouter("/",&controllers.RemoteController{},"*:Remote"),
+		beego.NSRouter("/api",&controllers.RemoteController{},"*:ApiRemote"),
+		beego.NSInclude(
+			&controllers.RemoteController{},
+		),
+	)
 	pc := beego.NewNamespace("/pc",
 		beego.NSRouter("/reflush",&controllers.PcController{},"*:ApiFlushPcInfo"),
 
@@ -18,5 +23,6 @@ func init() {
 	)
 
 	beego.AddNamespace(pc)
+	beego.AddNamespace(remote)
 
 }
