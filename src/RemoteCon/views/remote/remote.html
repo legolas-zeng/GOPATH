@@ -1,0 +1,91 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs" id="myTables">
+                        <li class="active"><a data-toggle="tab" href="#zonelist">功能执行</a></li>
+                        <li class=""><a data-toggle="tab" href="#result_output">输出结果</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="zonelist">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 " style="background:#FFF;">
+                                    <div class="ibox float-e-margins">
+                                        <div class="col-sm-2">
+                                            <div class="form-inline">
+                                                <div class="input-group">
+                                                    <div class="input-group-addon">选择模板：</div>
+                                                    <select class="form-control" id="CmdId">
+                                                        <option value="all" selected="selected">请选择模板</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-inline">
+                                                <div class="input-group">
+                                                    <div class="form-group" id="argv_html"></div>
+                                                    <div class="form-group" id="argv_html2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button id="tijiao" class="btn btn-info btn-block btn-outline btn-primary" name="tijiao" >
+                                                运行
+                                            </button>
+
+                                        </div>
+                                        <div class="col-sm-5">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <hr style="height:1px;border:none;border-top:1px dashed #0066CC;" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>已选择：<span id="select_count">0</span></h4>
+                                    {{range $index,$element :=.info}}
+                                        {{/*<label> <input type="checkbox" value="{{$element.Ip}}"> <i></i> {{$element.Ip}} </label>*/}}
+                                        <input type="checkbox" name="ip_list" value="{{$element.Ip}}" id="{{$element.Ip}}">{{$element.Ip}}
+                                        <span class="text-success glyphicon glyphicon-ok-circle"></span>
+                                            {{if eq 4 (indexdiv $index)}}
+                                                <br>
+                                            {{end}}
+                                    {{end}}
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane " id="result_output">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>主机数量：<span id="host_count">0</span> | 成功：<span id="success_count">0</span>  | 失败：<span id="fail_count">0</span></h4>
+                                    <table class="table table-bordered table-condensed table-hover">
+                                        <thead>
+                                        <th style="width:100px;">序号</th>
+                                        <th style="width:200px;">IP</th>
+                                        <th>结果输出</th>
+                                        <th style="width:100px;">状态</th>
+                                        </thead>
+                                        <tbody id="result_body">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
