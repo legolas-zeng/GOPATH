@@ -24,8 +24,13 @@ func init() {
 	}
 
 }
+func indexdiv(index int) (index1 int) {
+	index1 = index % 5
+	return
+}
 
 func main() {
+	beego.AddFuncMap("indexdiv", indexdiv)
 	beego.SetStaticPath("/images","images")
 	beego.SetStaticPath("/css","css")
 	beego.SetStaticPath("/js","js")
