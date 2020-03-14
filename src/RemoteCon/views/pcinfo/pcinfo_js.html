@@ -1,14 +1,16 @@
 <script>
     $(function () {
-        $("#flush").click(function () {
+        $("#actives").on('click',"button",function(e){
+            var ip = e.target.name
+            console.log(ip)
             $.ajax({
                 type: "POST",
                 url: "/pc/reflush",
-                data: {'ip':'192.168.10.26'},
+                data: {'ip':ip,'cmd':'getinfo'},
                 dataType: 'JSON',
                 success: function (data) {
                     console.log(data)
-                    if (data.status == '1') {
+                    if (data.status == '0') {
                         toastr.success(data.msg)
                     }
                     else {

@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="ibox-content">
-                <div class="table-responsive">
+                <div class="table-responsive" id="actives">
                     <table class="table table-striped table-bordered table-hover dataTables-example abc" >
                         <thead>
                         <tr>
@@ -26,14 +26,14 @@
                         <tr>
                             <td align="center" style="vertical-align: middle" >{{$element.Ip}}</td>
                             <td align="center" style="vertical-align: middle" >{{$element.Port}}</td>
-                            <td align="center">{{$element.Ip}}</td>
+                            <td align="center">{{$element.Pcname}}</td>
                             <td align="center">{{$element.Cpu}}</td>
                             <td align="center">{{$element.Osinfo}}</td>
                             <td align="center">{{if eq $element.Online "0" }}<p><span class="badge badge-primary">在线</span></p>
                             {{else}}
                                 <p><span class="badge badge-danger">离线</span></p>
                             {{end}}</td>
-                            <td align="center">{{if eq $element.Online "0" }}<button id="flush" class="btn btn-primary btn-sm btn-rounded">刷新</button>
+                            <td align="center">{{if eq $element.Online "0" }}<button id="flush" class="btn btn-primary btn-sm btn-rounded" name="{{$element.Ip}}">刷新</button>
                             {{else}}
                                 <button class="btn btn-danger btn-sm btn-rounded" disabled="disabled">刷新</button>
                             {{end}}
