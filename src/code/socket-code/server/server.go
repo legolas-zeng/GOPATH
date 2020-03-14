@@ -163,6 +163,8 @@ func handleRedisMsg(info string){
                 _, ok := connlist[key];
                 if ok {
                     sendMsgToClient(connlist[key], value)
+                    //运行后要把map里面的ip删除
+                    delete(cmdinfo,key)
                 }else {
                     fmt.Println("该主机未连接")
                 }

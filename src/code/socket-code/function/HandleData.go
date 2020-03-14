@@ -12,7 +12,7 @@ const (
     USERNAME = "zwa"
     PASSWORD = "qq1005521"
     NETWORK  = "tcp"
-    SERVER   = "x.x.x.x"
+    SERVER   = "192.168.3.5"
     PORT     = 3306
     DATABASE = "pcinfo"
 )
@@ -43,7 +43,7 @@ func mysqlConn() *sql.DB{
 //插入电脑硬件数据
 func UpdatePcData(pcinfo map[string]string){
     DB := mysqlConn()
-    _,err := DB.Exec("UPDATE hardware set cpu=?,osinfo=?,men=? where ip=?",pcinfo["cpu"],pcinfo["osinfo"],pcinfo["men"],pcinfo["ip"])
+    _,err := DB.Exec("UPDATE pcinfo set cpu=?,osinfo=?,men=? where ip=?",pcinfo["cpu"],pcinfo["osinfo"],pcinfo["men"],pcinfo["ip"])
     if err != nil{
         fmt.Printf("更新失败,err:%v",err)
         return
@@ -54,17 +54,16 @@ func UpdatePcData(pcinfo map[string]string){
 func InitPcInfo(clientip string){
     add := strings.Split(clientip,":")
     req:=queryOne(add[0])
-    fmt.Println(req)
     DB := mysqlConn()
     if req ==0 {
-    _,err := DB.Exec("insert INTO hardware(ip,port,online) values(?,?,?)",add[0],add[1],0)
+    _,err := DB.Exec("insert INTO pcinfo(ip,port,online) values(?,?,?)",add[0],add[1],0)
     //先判断是否存在这个ip的数据
     if err != nil{
        fmt.Printf("初始化数据失败,err:%v",err)
        return
     }
     }else if req==1{
-        _,err := DB.Exec("UPDATE hardware set online=?,port=? where ip=?",0,add[1],add[0])
+        _,err := DB.Exec("UPDATE pcinfo set online=?,port=? where ip=?",0,add[1],add[0])
         if err != nil{
             fmt.Printf("更新状态失败,err:%v",err)
             return
@@ -75,7 +74,7 @@ func InitPcInfo(clientip string){
 
 func OfflineClient(clientip string)  {
     DB := mysqlConn()
-    _,err := DB.Exec("UPDATE hardware set online=? where ip=?",1,clientip)
+    _,err := DB.Exec("UPDATE pcinfo set online=? where ip=?",1,clientip)
     if err != nil{
         fmt.Printf("Insert failed,err:%v",err)
         return
@@ -84,7 +83,7 @@ func OfflineClient(clientip string)  {
 
 func queryOne(ip string) int{
     DB := mysqlConn()
-    rows:= DB.QueryRow("select * from hardware where ip=?",ip)
+    rows:= DB.QueryRow("select * from pcinfo where ip=?",ip)
     pcinfo := new(Pcinfo)
     err := rows.Scan(&pcinfo.Id, &pcinfo.Ip, &pcinfo.Cpu, &pcinfo.OsInfo, &pcinfo.Men, &pcinfo.Online, &pcinfo.Port)
     if err == nil {
