@@ -3,6 +3,7 @@ package controllers
 import (
     "github.com/astaxie/beego"
     "RemoteCon/models"
+    "fmt"
 )
 
 type RemoteController struct {
@@ -35,6 +36,18 @@ func (this *RemoteController) Remote(){
     this.LayoutSections["re_content"] = "remote/remote.html"
     this.LayoutSections["js"] = "remote/remote_js.html"
     this.Render()
+}
+
+func (this *RemoteController) ApiRemote(){
+    ip := this.GetString("ip_list")
+    cmd := this.GetString("cmd")
+    argv1 := this.GetString("argv1")
+    fmt.Println(ip,cmd,argv1)
+    resp := make(map[string]interface{})
+    resp["status"] = 0
+    resp["msg"] = "刷新数据成功"
+    this.Data["json"] = resp
+    this.ServeJSON()
 }
 
 
