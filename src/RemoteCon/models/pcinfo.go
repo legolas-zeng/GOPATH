@@ -10,6 +10,7 @@ type Pcinfo struct {
     Men 		string		`orm:"size(255):null"`
     Online 		string 		`orm:"size(255):null"`
     Port 		string 		`orm:"size(255):null"`
+    Pcname 		string 		`orm:"size(255):null"`
 }
 
 //TODO 查询信息
