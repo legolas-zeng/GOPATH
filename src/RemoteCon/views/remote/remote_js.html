@@ -1,3 +1,5 @@
+<script src="/static/js/artDialog/artDialog.js?skin=default"></script>
+<script src="/static/js/artDialog/plugins/iframeTools.js"></script>
 <script>
     $("input[name='select_all']").change(function(){
         if ($(this).is(":checked") == true) {
@@ -7,5 +9,115 @@
             $("input[name='select']").prop("checked",false);
             $("input[name='ip_list']").prop("checked",false);
         }
+        get_select_count()
+    })
+</script>
+
+<script>
+    function get_select_count(){
+        var count = 0;
+        $("input[name='select']").each(function(){
+            if ($(this).is(":checked") == true) {
+                count += 1;
+                $(this).parents("label").addClass('text-danger');
+            }else{
+                $(this).parents("label").removeClass('text-danger');
+            }
+        });
+        $("#select_count").html(count);
+    }
+</script>
+
+<script>
+    $("input[name='select']").change(function(){
+        get_select_count();
+    })
+</script>
+
+<script>
+    $("#CmdId").change(function(){
+        var isarg = $(this).find("option:selected").attr("isarg");
+        console.log(isarg)
+        if (isarg == '0'){
+            $("#argv_html").html('');
+        }else if (isarg == '1'){
+            $("#argv_html").html('<input type="text " class="form-control" name="argv1" placeholder="例如：ipconfig" style="width:300px;">');
+        }else if (isarg == '2'){
+            $("#argv_html").html('<input type="text " class="form-control" name="argv1" placeholder="第一个参数" style="width:150px;">');
+            $("#argv_html2").html('<input type="text " class="form-control" name="argv2" placeholder="第二个参数" style="width:150px;">');
+        }
+    })
+</script>
+
+<script>
+    $(function (){
+        $("#tijiao").click(function(){
+            var Postdata = {
+                'ip_list':[],
+                'cmd':'',
+                'argv1':''
+            }
+            var module = $("#CmdId").val();
+            Postdata['cmd'] = module
+            if (module == 'all'){
+                toastr.error('记得选要运行的模板！！！！')
+                return false;
+            }
+            if (module == 'shell'){
+                //    var show_argv = '';
+                //   var isargs = $("#moduleId").find("option:selected").attr("isarg");
+                //    console.log(isargs)
+                //    if (isargs == '1'){
+                var argv1 = $("input[name='argv1']").val();
+                Postdata['argv1'] = argv1;
+                show_argv = argv1;
+                // }
+            }
+
+            $("input[name='select']").each(function(){
+                if ($(this).is(":checked") == true) {
+                    Postdata["ip_list"].push($(this).val());
+                }
+            })
+
+            console.log(Postdata)
+            $.ajax({
+                method: 'post',
+                dataType:'json',
+                data:{"ip_list":'1111'},
+                url: "/remote/api",
+                error: function(){
+                    // art.dialog.list['cmdrunning'].close();
+                    alert('接口出错')},
+                success: function (data) {
+                    $('#myTables [href="#result_output"]').tab('show');
+                    html_str = '';
+                    var i = 1;
+                    var success_count = 0;
+                    var fail_count = 0;
+                    console.log(data)
+                    //$("#result_stdout").html("\n" + data +"\n");
+                    $.each(data,function(name,value) {
+                        console.log(name)
+                        console.log(value)
+                        if (value.status == '0'){
+                            html_str += '<tr><td>'+i+'</td><td>'+name+'</td><td><pre style="min-width:500px;margin:0px;padding:1px;white-space: pre-wrap;word-wrap: break-word;">'+value.msg+'</pre></td><td><span class="label label-success">Finished</span></td></tr>';
+                            success_count += 1;
+                        }
+                        else {
+                            html_str += '<tr><td>'+i+'</td><td>'+name+'</td><td><pre style="min-width:500px;margin:0px;padding:1px;white-space: pre-wrap;word-wrap: break-word;">'+value.msg+'</pre></td><td><span class="label label-danger">Fail</span></td></tr>';
+                            fail_count += 1;
+                        }
+                        i += 1;
+
+                    })
+                    $("#result_body").html(html_str);
+                    $("#host_count").html(i-1);
+                    $("#success_count").html(success_count);
+                    $("#fail_count").html(fail_count);
+
+                }
+            })
+        })
     })
 </script>

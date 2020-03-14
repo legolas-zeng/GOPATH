@@ -23,7 +23,7 @@
                                                     <div class="input-group-addon">选择模板：</div>
                                                     <select class="form-control" id="CmdId">
                                                         <option value="all" selected="selected">请选择模板</option>
-
+                                                        <option value="cmd" isarg="1">cmd</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -65,11 +65,16 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                 {{range $index,$element :=.info}}
-                                    <input type="checkbox" name="select" key="{{ $index }}" value="{{ $element.Ip }}" id="{{ $element.Ip }}">{{$element.Ip}}
-                                    <span class="text-success glyphicon glyphicon-ok-circle"></span> &emsp;
-                                    {{if eq 4 (indexdiv $index)}}
-                                        <br>
+                                    {{if eq $element.Online "0" }}
+                                        <input type="checkbox" name="select" key="{{ $index }}" value="{{ $element.Ip }}" id="{{ $element.Ip }}">{{$element.Ip}} &nbsp;<span class="badge badge-primary">{{$element.Pcname}}</span>
+                                        <span class="text-success glyphicon glyphicon-ok-circle"></span> &emsp;
+                                    {{else}}
+                                        <input disabled="true" type="checkbox" key="{{ $index }} " value="{{ $element.Ip }}" id="{{ $element.Ip }}">{{$element.Ip}} &nbsp;<span class="badge badge-danger">{{$element.Pcname}}</span>
+                                        <span class="text-danger glyphicon glyphicon-ok-circle"></span> &emsp;
                                     {{end}}
+                                        {{if eq 4 (indexdiv $index)}}
+                                            <br>
+                                        {{end}}
                                 {{end}}
                                 </div>
                             </div>
