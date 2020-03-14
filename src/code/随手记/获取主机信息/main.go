@@ -7,6 +7,7 @@ import (
     "github.com/StackExchange/wmi"
     "unsafe"
     "syscall"
+    "strings"
 )
 
 type cpuInfo struct {
@@ -149,6 +150,24 @@ func getStorageInfo() {
     fmt.Printf("%.2fGB", float64(localStorages[0].Total)/float64(1024*1024*1024))
 }
 
+func GetUserName() string {
+    var size uint32 = 128
+    var buffer = make([]uint16, size)
+    user := syscall.StringToUTF16Ptr("USERNAME")
+    domain := syscall.StringToUTF16Ptr("USERDOMAIN")
+    r, err := syscall.GetEnvironmentVariable(user, &buffer[0], size)
+    if err != nil {
+        return ""
+    }
+    buffer[r] = '@'
+    old := r + 1
+    if old >= size {
+        return syscall.UTF16ToString(buffer[:r])
+    }
+    r, err = syscall.GetEnvironmentVariable(domain, &buffer[old], size-old)
+    namelist := strings.Split(syscall.UTF16ToString(buffer[:old+r]),"@")
+    return namelist[1]
+}
 
 func main() {
     ip, err := externalIP()
@@ -159,6 +178,8 @@ func main() {
     getOSInfo()
     getMemoryInfo()
     getStorageInfo()
+    username := GetUserName()
+    fmt.Println(username)
 
     fmt.Println(ip.String())
 }
