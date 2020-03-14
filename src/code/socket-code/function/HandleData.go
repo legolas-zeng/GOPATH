@@ -25,6 +25,7 @@ type Pcinfo struct {
     Men         sql.NullString       `db:"men"`
     Online      int                  `db:"online"`
     Port        sql.NullString       `db:"port"`
+    Pcname      sql.NullString       `db:"pcname"`
 }
 
 // mysql数据库初始化
@@ -43,7 +44,7 @@ func mysqlConn() *sql.DB{
 //插入电脑硬件数据
 func UpdatePcData(pcinfo map[string]string){
     DB := mysqlConn()
-    _,err := DB.Exec("UPDATE pcinfo set cpu=?,osinfo=?,men=? where ip=?",pcinfo["cpu"],pcinfo["osinfo"],pcinfo["men"],pcinfo["ip"])
+    _,err := DB.Exec("UPDATE pcinfo set cpu=?,osinfo=?,men=?,pcname=? where ip=?",pcinfo["cpu"],pcinfo["osinfo"],pcinfo["men"],pcinfo["pcname"],pcinfo["ip"])
     if err != nil{
         fmt.Printf("更新失败,err:%v",err)
         return
@@ -55,6 +56,7 @@ func InitPcInfo(clientip string){
     add := strings.Split(clientip,":")
     req:=queryOne(add[0])
     DB := mysqlConn()
+    fmt.Println(req)
     if req ==0 {
     _,err := DB.Exec("insert INTO pcinfo(ip,port,online) values(?,?,?)",add[0],add[1],0)
     //先判断是否存在这个ip的数据
@@ -85,9 +87,9 @@ func queryOne(ip string) int{
     DB := mysqlConn()
     rows:= DB.QueryRow("select * from pcinfo where ip=?",ip)
     pcinfo := new(Pcinfo)
-    err := rows.Scan(&pcinfo.Id, &pcinfo.Ip, &pcinfo.Cpu, &pcinfo.OsInfo, &pcinfo.Men, &pcinfo.Online, &pcinfo.Port)
+    err := rows.Scan(&pcinfo.Id, &pcinfo.Ip, &pcinfo.Cpu, &pcinfo.OsInfo, &pcinfo.Men, &pcinfo.Online, &pcinfo.Port,&pcinfo.Pcname)
     if err == nil {
-        fmt.Println(pcinfo.Id, pcinfo.Ip, pcinfo.Cpu, pcinfo.OsInfo, pcinfo.Men, pcinfo.Online, pcinfo.Port)
+        fmt.Println(pcinfo.Id, pcinfo.Ip, pcinfo.Cpu, pcinfo.OsInfo, pcinfo.Men, pcinfo.Online, pcinfo.Port,pcinfo.Pcname)
         return 1
     }else {
         fmt.Println("没有结果")
