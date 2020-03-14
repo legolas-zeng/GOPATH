@@ -6,7 +6,7 @@ import (
 )
 
 func init() {
-	beego.Router("/",&controllers.IndexController{},"get:Index")
+	beego.Router("/",&controllers.RemoteController{},"*:GetPcinfo")
 	beego.Router("/remote",&controllers.RemoteController{},"*:Remote")
 
 	pc := beego.NewNamespace("/pc",
