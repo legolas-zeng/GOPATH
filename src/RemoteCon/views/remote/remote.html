@@ -53,16 +53,24 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12">
+                                <div class="col-sm-1">
                                     <h4>已选择：<span id="select_count">0</span></h4>
-                                    {{range $index,$element :=.info}}
-                                        {{/*<label> <input type="checkbox" value="{{$element.Ip}}"> <i></i> {{$element.Ip}} </label>*/}}
-                                        <input type="checkbox" name="ip_list" value="{{$element.Ip}}" id="{{$element.Ip}}">{{$element.Ip}}
-                                        <span class="text-success glyphicon glyphicon-ok-circle"></span>
-                                            {{if eq 4 (indexdiv $index)}}
-                                                <br>
-                                            {{end}}
+                                </div>
+                                <div class="col-sm-1">
+                                    <input type="checkbox" name="select_all"> 全选
+                                </div>
+                                <div class="col-sm-10">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                {{range $index,$element :=.info}}
+                                    <input type="checkbox" name="select" key="{{ $index }}" value="{{ $element.Ip }}" id="{{ $element.Ip }}">{{$element.Ip}}
+                                    <span class="text-success glyphicon glyphicon-ok-circle"></span> &emsp;
+                                    {{if eq 4 (indexdiv $index)}}
+                                        <br>
                                     {{end}}
+                                {{end}}
                                 </div>
                             </div>
                         </div>
