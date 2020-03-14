@@ -8,6 +8,6 @@ type IndexController struct {
 
 func (this *IndexController) Index() {
     //this.TplName = "index.html"
-    this.TplName = "remote/pcinfo.html"
+    this.TplName = "pcinfo/pcinfo.html"
     this.Render()
 }
