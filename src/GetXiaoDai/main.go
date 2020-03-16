@@ -6,11 +6,28 @@ import (
     "github.com/astaxie/beego/orm"
     "fmt"
     "GetXiaoDai/models"
+    "strings"
+    "github.com/astaxie/beego/context"
 )
 
+var FilterUser = func(ctx *context.Context){
+    _, ok := ctx.Input.Session("username").(string)
+    ok2 := strings.Contains(ctx.Request.RequestURI, "/login")
+    if !ok && !ok2{
+        ctx.Redirect(302, "/login")
+    }
+}
+
 func init() {
+    //注册过滤器
+    beego.InsertFilter("/*", beego.BeforeRouter, FilterUser)
+    //打开session
+    beego.BConfig.WebConfig.Session.SessionOn = true
     orm.Debug = true
-    orm.RegisterModel(new(models.XiaoDai))
+    orm.RegisterModel(
+        new(models.XiaoDai),
+        new(models.User),
+        )
     orm.RegisterDataBase("default", "mysql", "root:qq1005521@tcp(127.0.0.1:3306)/xiaodai?charset=utf8", 30)
     err := orm.RunSyncdb("default", false, true)
     if err != nil {
@@ -29,3 +46,4 @@ func main() {
 
     beego.Run()
 }
+

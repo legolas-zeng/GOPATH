@@ -13,10 +13,13 @@ type IndexController struct {
 
 func (this *IndexController) Index() {
     //this.TplName = "index.html"
+    username:=this.GetSession("username")
+    fmt.Println("+++++++",username)
     DeleteFile(ExeclFile)
     DeleteFile(LogFile)
     DeleteFolder(DesPaths)
     this.TplName = "form_file_upload.html"
+    this.Data["username"] = username
     this.Render()
 }
 
