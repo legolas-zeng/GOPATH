@@ -5,7 +5,7 @@
 
 `RemoteCon`项目是通过beego远程控制windows的程控工具
 
-![image](https://s1.ax1x.com/2020/03/17/8tfz0x.png)
+![image](remotecon结构图.png)
 
 
 #### 运行
