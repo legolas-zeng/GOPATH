@@ -17,6 +17,7 @@ func (this *PcController)ApiFlushPcInfo()  {
     fmt.Println(ip,cmd)
     cmdinfo := make(map[string]string)
     cmdinfo[ip] = cmd
+    fmt.Println("+++++++",cmdinfo)
     err := publish(cmdinfo)
     resp := make(map[string]interface{})
     if err != nil {
@@ -40,14 +41,9 @@ func NewRedisClient() (conn redis.Conn, err error) {
 }
 
 func publish(cmdinfo map[string]string)  error {
+    fmt.Println("往redis消息队列发送信息：",cmdinfo)
     conn, _ := NewRedisClient()
-    type Data struct {
-        Name *string
-        Age *int
-    }
     value,_ := json.Marshal(cmdinfo)
-    fmt.Println(value)
-    fmt.Printf("%T",value)
     _, err := conn.Do("Publish", "order-create", value)
     return err
 }
