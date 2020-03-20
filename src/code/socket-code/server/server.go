@@ -13,6 +13,7 @@ import (
     _ "../function"
     "code/socket-code/function"
     "strings"
+    "regexp"
 )
 
 //const (
@@ -35,6 +36,7 @@ var (
     lock                             = &sync.Mutex{}
     cmdinfo         = make(map[string]string)
     pcinfo          = make(map[string]string)
+
 )
 
 // ReadLine 函数等待命令行输入,返回字符串
@@ -78,25 +80,27 @@ func connection(conn net.Conn) {
             return
         }
         tmpbuf = protocol.Depack(append(tmpbuf,buf[:n]...))
-        handClientMsg(string(tmpbuf))
-        //fmt.Printf("client%s发来消息:%s \n",conn.RemoteAddr().String(),string(tmpbuf))
+        handClientMsg(add[0],string(tmpbuf))
     }
 }
 
 
 
 //处理client返回的信息
-func handClientMsg(msg string){
+func handClientMsg(ip string,msg string){
     if msg == "❤❤❤❤❤❤" {
         //fmt.Println("接收到心跳消息")
     }else if msg[:1] == "{"{
         //这里将获取的主机信息存入数据库
         if err := json.Unmarshal([]byte(msg), &pcinfo); err == nil {
+            fmt.Printf("接收到客户端的信息：%s",pcinfo)
             function.UpdatePcData(pcinfo)
         }
     }else {
         //这里打印执行完命令的返回值
-        fmt.Printf("接收到客户端的信息：%s",msg)
+        fmt.Printf("接收到客户端%s的信息",ip)
+        //这里通过redis返回给beego
+        publish(ip,msg)
     }
 }
 // 等待Socket 客户端连接
@@ -142,12 +146,24 @@ func resolveOrderCreate(wait *sync.WaitGroup)  {
     for {
         switch v := client.Receive().(type){
         case redis.Message:
-            //fmt.Printf("收到来自%s订阅消息:%s", v.Channel, string(v.Data))
+            fmt.Printf("收到来自%s订阅消息:%s", v.Channel, string(v.Data))
             handleRedisMsg(string(v.Data))
         case redis.Subscription:
             fmt.Println("Subscription", v.Channel, v.Kind, v.Count)
         }
     }
+}
+
+//发布redis
+func publish (ip string,value string){
+    reqinfo := make(map[string]string)
+    reqinfo[ip] = value
+    conn, err := newRedisclient()
+    if err != nil {
+        return
+    }
+    //value,_ := json.Marshal(cmdinfo)
+    conn.Do("Publish", "result", reqinfo)
 }
 
 //从redis读取数据发送到client
@@ -156,23 +172,38 @@ func handleRedisMsg(info string){
     if err != nil {
         fmt.Println("string转map失败",err)
     }else {
-        fmt.Println("收到命令：",cmdinfo)
+        fmt.Println("收到命令------",cmdinfo)
         for key,value := range cmdinfo{
-            //connid,_ := strconv.Atoi(key)
+            fmt.Println(key,value)
+            ips := handleData(key)
+            fmt.Println(ips)
+            fmt.Println(len(ips))
             if key != "" {
-                _, ok := connlist[key];
-                if ok {
-                    sendMsgToClient(connlist[key], value)
-                    //运行后要把map里面的ip删除
-                    delete(cmdinfo,key)
-                }else {
-                    fmt.Println("该主机未连接")
+                for _,v := range ips{
+                    _, ok := connlist[v];
+                    if ok{
+                        fmt.Printf("当前执行主机%s，命令%s \n",v,value)
+                        sendMsgToClient(connlist[v], value)
+                    } else{
+                        fmt.Println("该主机未连接 \n")
+                        function.OfflineClient(v)
+                    }
                 }
             }
-
+            //运行后要把map里面的ip删除
+            delete(cmdinfo, key)
         }
     }
+}
 
+func handleData(args string) []string{
+    var ip_list         []string
+    reg1 := regexp.MustCompile(`(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)\.(25[0-5]|2[0-4]\d|[0-1]\d{2}|[1-9]?\d)`)
+    ips := reg1.FindAll([]byte(args),-1)
+    for _, value := range ips {
+        ip_list = append(ip_list,string(value))
+    }
+    return ip_list
 }
 
 func main() {

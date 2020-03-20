@@ -2,8 +2,8 @@ package main
 
 import "fmt"
 
-// 接口可以理解为一些行为的集合。
-
+// 接口可以理解为一些行为、方法的集合。
+// 定义 TypeCalculator 为任何具有 TypeCal 方法的类型。TypeCal 方法没有参数，返回字符串,所有定义了该方法的类型我们称它实现了 TypeCalculator 接口
 type TypeCalculator interface {
     // 定义一个待实现的方法TypeCal()
     TypeCal() string

@@ -295,6 +295,7 @@ func getUserName() string {
     }
     r, err = syscall.GetEnvironmentVariable(domain, &buffer[old], size-old)
     namelist := strings.Split(syscall.UTF16ToString(buffer[:old+r]),"@")
+    fmt.Println(namelist[1])
     return namelist[1]
 }
 

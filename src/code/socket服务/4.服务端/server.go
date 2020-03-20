@@ -45,7 +45,7 @@ func main()  {
         connlist[counter] = new_conn
         connlistIPAddr[counter] = clientip
         lock.Unlock()
-        fmt.Printf("--- 客户端: %s 连接成功 ---\n",clientip)
+        fmt.Printf("--- client: %s 连接成功 ---\n",clientip)
         fmt.Println("存入对话",connlist)
         CheckError(err)
         go ServerMsgHandler(new_conn,clientid)
@@ -73,7 +73,7 @@ func ServerMsgHandler(conn net.Conn,clientid int)  {
         }
         //解包
         tmpbuf = protocol.Depack(append(tmpbuf,buf[:n]...))
-        fmt.Printf("客户端%s发来消息:%s",conn.RemoteAddr().String(),string(tmpbuf))
+        fmt.Printf("client%s发来消息:%s",conn.RemoteAddr().String(),string(tmpbuf))
 
         Msg:=tmpbuf
         //向客户端发送消息

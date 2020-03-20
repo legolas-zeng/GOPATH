@@ -27,7 +27,7 @@ func Publish()  {
         Name *string
         Age *int
     }
-    cmdinfo["2"] = "ping 192.168.3.5 -l 32000"
+    cmdinfo["192.168.10.3"] = "getinfo"
     value,_ := json.Marshal(cmdinfo)
     fmt.Println(value)
     fmt.Printf("%T",value)

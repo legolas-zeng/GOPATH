@@ -18,7 +18,7 @@ var (
     process   = flag.Int("n", 100, "进程数 例如:-n=10")
     h         = flag.Bool("h", false, "帮助信息")
 )
-//go run main.go -h
+//go run client.go -h
 func main() {
     flag.Parse()
     //帮助信息
