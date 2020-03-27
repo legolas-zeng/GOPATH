@@ -44,6 +44,6 @@ func publish(cmdinfo map[string]string)  error {
     fmt.Println("往redis消息队列发送信息：",cmdinfo)
     conn, _ := NewRedisClient()
     value,_ := json.Marshal(cmdinfo)
-    _, err := conn.Do("Publish", "order-create", value)
+    _, err := conn.Do("Publish", "result", value)
     return err
 }
