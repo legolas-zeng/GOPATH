@@ -34,57 +34,37 @@
     })
 </script>
 
-<script>
-    $("#CmdId").change(function(){
-        var isarg = $(this).find("option:selected").attr("isarg");
-        console.log(isarg)
-        if (isarg == '0'){
-            $("#argv_html").html('');
-        }else if (isarg == '1'){
-            $("#argv_html").html('<input type="text " class="form-control" name="argv1" placeholder="例如：ipconfig" style="width:300px;">');
-        }else if (isarg == '2'){
-            $("#argv_html").html('<input type="text " class="form-control" name="argv1" placeholder="第一个参数" style="width:150px;">');
-            $("#argv_html2").html('<input type="text " class="form-control" name="argv2" placeholder="第二个参数" style="width:150px;">');
-        }
-    })
-</script>
 
 <script>
     $(function (){
         $("#tijiao").click(function(){
-            var Postdata = {
-                'ip_list':[],
-                'cmd':'',
-                'argv1':''
-            }
+            var ip_list = []
             var module = $("#CmdId").val();
-            Postdata['cmd'] = module
+            console.log("选择的模板",module)
             if (module == 'all'){
                 toastr.error('记得选要运行的模板！！！！')
                 return false;
             }
             if (module == 'shell'){
-                //    var show_argv = '';
-                //   var isargs = $("#moduleId").find("option:selected").attr("isarg");
-                //    console.log(isargs)
-                //    if (isargs == '1'){
                 var argv1 = $("input[name='argv1']").val();
-                Postdata['argv1'] = argv1;
-                show_argv = argv1;
                 // }
             }
-
             $("input[name='select']").each(function(){
                 if ($(this).is(":checked") == true) {
-                    Postdata["ip_list"].push($(this).val());
+                    ip_list.push($(this).val());
                 }
             })
-
-            console.log(Postdata)
+            console.log("参数",argv1)
+            var str = JSON.stringify(ip_list)
+            console.log("ip列表",str)
             $.ajax({
                 method: 'post',
                 dataType:'json',
-                data:{"ip_list":'1111'},
+                data:{
+                    "ip_list":str,
+                    "cmd":module,
+                    "argv1":argv1,
+                },
                 url: "/remote/api",
                 error: function(){
                     // art.dialog.list['cmdrunning'].close();
@@ -100,12 +80,12 @@
                     $.each(data,function(name,value) {
                         console.log(name)
                         console.log(value)
-                        if (value.status == '0'){
-                            html_str += '<tr><td>'+i+'</td><td>'+name+'</td><td><pre style="min-width:500px;margin:0px;padding:1px;white-space: pre-wrap;word-wrap: break-word;">'+value.msg+'</pre></td><td><span class="label label-success">Finished</span></td></tr>';
+                        if (value != '运行出错！'){
+                            html_str += '<tr><td>'+i+'</td><td>'+name+'</td><td><pre style="min-width:500px;margin:0px;padding:1px;white-space: pre-wrap;word-wrap: break-word;">'+value+'</pre></td><td><span class="label label-success">Finished</span></td></tr>';
                             success_count += 1;
                         }
                         else {
-                            html_str += '<tr><td>'+i+'</td><td>'+name+'</td><td><pre style="min-width:500px;margin:0px;padding:1px;white-space: pre-wrap;word-wrap: break-word;">'+value.msg+'</pre></td><td><span class="label label-danger">Fail</span></td></tr>';
+                            html_str += '<tr><td>'+i+'</td><td>'+name+'</td><td><pre style="min-width:500px;margin:0px;padding:1px;white-space: pre-wrap;word-wrap: break-word;">'+value+'</pre></td><td><span class="label label-danger">Fail</span></td></tr>';
                             fail_count += 1;
                         }
                         i += 1;
@@ -119,5 +99,21 @@
                 }
             })
         })
+    })
+</script>
+
+<script>
+    $("#CmdId").change(function(){
+        var isarg = $(this).find("option:selected").attr("isarg");
+        if (isarg == '0'){
+            $("#argv_html").html('');
+            $("#argv_html2").html('');
+        }else if (isarg == '1'){
+            $("#argv_html").html('<input type="text " class="form-control" name="argv1" placeholder="例如：ipconfig" style="width:300px;">');
+            $("#argv_html2").html('');
+        }else if (isarg == '2'){
+            $("#argv_html").html('<input type="text " class="form-control" name="argv1" placeholder="第一个参数" style="width:150px;">');
+            $("#argv_html2").html('<input type="text " class="form-control" name="argv2" placeholder="第二个参数" style="width:150px;">');
+        }
     })
 </script>
