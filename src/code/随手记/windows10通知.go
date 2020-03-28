@@ -1,19 +1,21 @@
 package main
 
 import (
-    "github.com/go-toast/toast"
     "log"
+
+    _ "gopkg.in/toast.v1"
+    "github.com/go-toast/toast"
 )
 
 func main() {
     notification := toast.Notification{
-        AppID:   "Microsoft.Windows.Shell.RunDialog",
-        Title:   "标题",
-        Message: "这是消息内容，等等。。。",
-        Icon:    "C:\\path\\to\\your\\logo.png", // 文件必须存在
+        AppID: "Example App",
+        Title: "My notification",
+        Message: "Some message about how important something is...",
+        Icon: "go.png", // This file must exist (remove this line if it doesn't)
         Actions: []toast.Action{
-            {"protocol", "按钮1", "https://www.google.com/"},
-            {"protocol", "按钮2", "https://github.com/"},
+            {"protocol", "I'm a button", ""},
+            {"protocol", "Me too!", ""},
         },
     }
     err := notification.Push()

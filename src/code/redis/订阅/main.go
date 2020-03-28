@@ -21,7 +21,7 @@ func resolveOrderCreate(wait *sync.WaitGroup)  {
         return
     }
     client := redis.PubSubConn{conn}
-    err = client.Subscribe("order-create")
+    err = client.Subscribe("result")
     if err != nil {
         fmt.Println("订阅错误:", err)
         return

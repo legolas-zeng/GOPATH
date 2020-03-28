@@ -17,13 +17,13 @@ func main() {
     //3秒之后发起测试请求，给服务端开启服务的机会
     time.Sleep(3 * time.Second)
 
-    conn,err := net.Dial("tcp", "127.0.0.1:8999")
+    conn,err := net.Dial("tcp", "192.168.10.3:8999")
     if err != nil {
         fmt.Println("client start err, exit!")
         return
     }
 
-    for n := 3; n >= 0; n-- {
+    for {
         //发封包message消息
         dp := znet.NewDataPack()
         msg, _ := dp.Pack(znet.NewMsgPackage(0,[]byte("Zinx Client Test Message")))

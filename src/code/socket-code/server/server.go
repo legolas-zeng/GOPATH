@@ -98,7 +98,7 @@ func handClientMsg(ip string,msg string){
         }
     }else {
         //这里打印执行完命令的返回值
-        fmt.Printf("接收到客户端%s的信息",ip)
+        fmt.Printf("接收到客户端%s的信息:%s \n",ip,msg)
         //这里通过redis返回给beego
         publish(ip,msg)
     }
@@ -129,7 +129,7 @@ func newRedisclient() (conn redis.Conn, err error) {
     return c, err
 }
 
-//订阅redis
+//订阅redis，接收来自beego的数据
 func resolveOrderCreate(wait *sync.WaitGroup)  {
     defer wait.Done()
     conn, err := newRedisclient()
@@ -137,7 +137,7 @@ func resolveOrderCreate(wait *sync.WaitGroup)  {
         return
     }
     client := redis.PubSubConn{conn}
-    err = client.Subscribe("order-create")
+    err = client.Subscribe("command")
     if err != nil {
         fmt.Println("订阅错误:", err)
         return
@@ -154,16 +154,17 @@ func resolveOrderCreate(wait *sync.WaitGroup)  {
     }
 }
 
-//发布redis
+//发布redis把client的数据返回给beego
 func publish (ip string,value string){
     reqinfo := make(map[string]string)
     reqinfo[ip] = value
+    values,_ := json.Marshal(reqinfo)
     conn, err := newRedisclient()
     if err != nil {
         return
     }
     //value,_ := json.Marshal(cmdinfo)
-    conn.Do("Publish", "result", reqinfo)
+    conn.Do("Publish", "result", values)
 }
 
 //从redis读取数据发送到client

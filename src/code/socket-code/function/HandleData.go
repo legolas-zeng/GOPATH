@@ -52,6 +52,7 @@ func UpdatePcData(pcinfo map[string]string){
     DB.Close()
 }
 
+//初始化客户端，判断是否存在记录
 func InitPcInfo(clientip string){
     add := strings.Split(clientip,":")
     req:=queryOne(add[0])
