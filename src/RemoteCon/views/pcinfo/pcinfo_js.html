@@ -1,12 +1,15 @@
 <script>
     $(function () {
         $("#actives").on('click',"button",function(e){
+            var ip_list = []
             var ip = e.target.name
-            console.log(ip)
+            ip_list.push(ip)
+            console.log(ip_list)
+            var str = JSON.stringify(ip_list)
             $.ajax({
                 type: "POST",
                 url: "/pc/reflush",
-                data: {'ip':ip,'cmd':'getinfo'},
+                data: {'ip':str,'cmd':'getinfo'},
                 dataType: 'JSON',
                 success: function (data) {
                     console.log(data)
