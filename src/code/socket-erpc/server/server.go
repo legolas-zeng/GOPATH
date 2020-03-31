@@ -4,8 +4,7 @@ import (
     "fmt"
     "time"
 
-    //"github.com/henrylee2cn/erpc/v6"
-    "github.com/henrylee2cn/erpc"
+    "github.com/henrylee2cn/erpc/v6"
 )
 
 func main() {
